@@ -1,0 +1,12 @@
+@model VehicleShield.Models.Policy
+@{ ViewData["Title"] = "Details Policy"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
+    <div class="auth-card" style="max-width: 800px; width: 100%;">
+        <h2>Policy Details</h2>
+        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl></div>
+        <div style="margin-top:20px;">
+            <a asp-action="Edit" asp-route-id="@Model?.GetType().GetProperty("PolicyId")?.GetValue(Model)" class="btn-auth" style="width:100px; display:inline-flex; margin-right:10px;">Edit</a>
+            <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+        </div>
+    </div>
+</div>

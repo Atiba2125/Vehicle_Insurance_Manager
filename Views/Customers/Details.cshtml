@@ -1,0 +1,116 @@
+@model VehicleShield.Models.Customer
+@{
+    ViewData["Title"] = "Customer Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Customer Profile Details</h1>
+        <p>Comprehensive dashboard of Customer credentials, vehicles, and billing history</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="Edit" asp-route-id="@Model.CustomerId" class="btn btn-primary">Edit Profile</a>
+        <a asp-action="Index" class="btn btn-outline">Back to List</a>
+    </div>
+</div>
+
+<div class="content-grid cols-2" style="margin-bottom: 20px;">
+    <!-- Profile Info -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Profile Summary</h3>
+        </div>
+        <div class="card-body">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                    <span style="color:var(--text-muted); font-size:0.85rem;">Full Name</span>
+                    <span style="color:#fff; font-weight:600;">@Model.CustomerName</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                    <span style="color:var(--text-muted); font-size:0.85rem;">Address</span>
+                    <span style="color:#fff;">@Model.CustomerAddress</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                    <span style="color:var(--text-muted); font-size:0.85rem;">Phone Number</span>
+                    <span style="color:#fff;">@Model.CustomerPhone</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                    <span style="color:var(--text-muted); font-size:0.85rem;">Linked Username</span>
+                    <span style="color:#fff; font-weight:600;">@(Model.User?.UserName ?? "N/A")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicles -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Insured Vehicles</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Vehicles.Any())
+            {
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    @foreach (var vehicle in Model.Vehicles)
+                    {
+                        <div style="background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:10px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <p style="font-weight:600; color:#fff; font-size:0.9rem;">@vehicle.VehicleName @vehicle.VehicleModel</p>
+                                <p style="font-size:0.75rem; color:var(--text-muted);">No: @vehicle.VehicleNumber</p>
+                            </div>
+                            <span style="font-weight:700; color:var(--primary);">₹@vehicle.VehicleRate.ToString("N0")</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p style="color:var(--text-muted); text-align:center; padding:20px; font-size:0.85rem;">No vehicles registered.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Policies and Billings -->
+<div class="card">
+    <div class="card-header">
+        <h3>Policies Purchased</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Policies.Any())
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Policy Number</th>
+                            <th>Vehicle</th>
+                            <th>Plan Type</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var policy in Model.Policies)
+                        {
+                            <tr>
+                                <td style="font-weight: 700; color: #fff;">@policy.PolicyNumber</td>
+                                <td>@policy.VehicleName</td>
+                                <td>@policy.PolicyType</td>
+                                <td>@policy.PolicyEndDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <span class="badge @(policy.Status == "Active" ? "badge-active" : "badge-inactive")">@policy.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p style="color:var(--text-muted); text-align:center; padding:20px; font-size:0.85rem;">No policy records found.</p>
+        }
+    </div>
+</div>

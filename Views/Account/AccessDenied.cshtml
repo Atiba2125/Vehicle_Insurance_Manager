@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+<div class="container" style="padding: 100px 20px; text-align: center; min-height: 60vh;">
+    <div style="background: rgba(255, 107, 107, 0.08); border: 1px solid rgba(255, 107, 107, 0.2); border-radius: 20px; padding: 40px; max-width: 600px; margin: 0 auto;">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" style="color: #ff6b6b; margin-bottom: 20px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h1 style="font-family: 'Outfit', sans-serif; font-size: 2rem; color: #fff; margin-bottom: 15px;">Access Denied</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">You do not have permission to access this resource. Please make sure you are logged in with the correct credentials.</p>
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline">Back to Home</a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Login Page</a>
+        </div>
+    </div>
+</div>

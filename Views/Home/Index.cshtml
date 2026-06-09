@@ -1,0 +1,498 @@
+@{
+    ViewData["Title"] = "Drive with Confidence – VehicleShield";
+}
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="home">
+    <div class="hero-bg">
+        <div class="hero-orb orb-1"></div>
+        <div class="hero-orb orb-2"></div>
+        <div class="hero-orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Trusted by 50,000+ vehicle owners
+            </div>
+            <h1 class="hero-title">
+                Drive with
+                <span class="gradient-text">Confidence</span><br />
+                Insure with Intelligence
+            </h1>
+            <p class="hero-desc">
+                VehicleShield provides comprehensive, affordable, and instant vehicle insurance.
+                Get covered in minutes with our smart online portal designed for the modern driver.
+            </p>
+            <div class="hero-actions">
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    Get Insured Now
+                </a>
+                <a href="#insurance-types" class="btn btn-outline btn-lg">
+                    Explore Plans
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-value">@ViewBag.HappyClients+</span>
+                    <span class="stat-label">Happy Clients</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value">₹@string.Format("{0:N0}", ViewBag.ClaimsSettled)</span>
+                    <span class="stat-label">Claims Settled</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value">@ViewBag.ClaimSuccess%</span>
+                    <span class="stat-label">Claim Success</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-value">24/7</span>
+                    <span class="stat-label">Support</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card main-card">
+                <div class="card-header">
+                    <div class="card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 8H4L2 14v4h20v-4L20 8z" stroke="#6C63FF" stroke-width="2" stroke-linejoin="round" /><circle cx="7" cy="18" r="2" stroke="#6C63FF" stroke-width="2" /><circle cx="17" cy="18" r="2" stroke="#6C63FF" stroke-width="2" /><path d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2" stroke="#6C63FF" stroke-width="2" /></svg></div>
+                    <span>Active Policy</span>
+                    <span class="card-badge">Active</span>
+                </div>
+                <div class="card-body">
+                    <p class="card-vehicle">Toyota Fortuner 2023</p>
+                    <p class="card-policy">Policy #VS-2026-00892</p>
+                    <div class="card-progress">
+                        <div class="progress-bar" style="width:68%"></div>
+                    </div>
+                    <div class="card-dates">
+                        <span>Jan 01, 2026</span>
+                        <span>Dec 31, 2026</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-card floating-card card-claim">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#3ECFCF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" stroke="#3ECFCF" stroke-width="2" /></svg>
+                <div>
+                    <p class="fc-label">Claim Settled</p>
+                    <p class="fc-value">₹45,000</p>
+                </div>
+            </div>
+            <div class="hero-card floating-card card-premium">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#F7C948" stroke-width="2" stroke-linejoin="round" /></svg>
+                <div>
+                    <p class="fc-label">Monthly Premium</p>
+                    <p class="fc-value">₹2,850</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="features-strip">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon fi-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </div>
+                <div>
+                    <h3>Instant Policy</h3>
+                    <p>Get insured in under 5 minutes</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon fi-teal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
+                </div>
+                <div>
+                    <h3>100% Secure</h3>
+                    <p>Bank-grade data encryption</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon fi-purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </div>
+                <div>
+                    <h3>Fast Claims</h3>
+                    <p>99.2% claim settlement rate</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon fi-gold">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" /><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                </div>
+                <div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock assistance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-visual">
+                <div class="about-img-wrap">
+                    <div class="about-img-bg"></div>
+                    <div class="about-img-card">
+                        <div class="abt-metric"><span class="abt-val">15+</span><span class="abt-lbl">Years Experience</span></div>
+                        <div class="abt-metric"><span class="abt-val">₹500Cr</span><span class="abt-lbl">Total Coverage</span></div>
+                        <div class="abt-metric"><span class="abt-val">200+</span><span class="abt-lbl">Partner Garages</span></div>
+                    </div>
+                </div>
+                <div class="about-decoration">
+                    <div class="deco-circle c1"></div>
+                    <div class="deco-circle c2"></div>
+                </div>
+            </div>
+            <div class="about-content">
+                <div class="section-tag">About VehicleShield</div>
+                <h2 class="section-title">India's Most Trusted <span class="gradient-text">Vehicle Insurance</span> Platform</h2>
+                <p class="about-desc">
+                    Founded in 2009, VehicleShield has been at the forefront of revolutionizing vehicle insurance in India.
+                    We combine cutting-edge technology with deep industry expertise to deliver insurance solutions that
+                    truly protect what matters most — your vehicle and your peace of mind.
+                </p>
+                <ul class="about-list">
+                    <li>
+                        <div class="list-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        Comprehensive coverage for all vehicle types
+                    </li>
+                    <li>
+                        <div class="list-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        Transparent pricing with zero hidden charges
+                    </li>
+                    <li>
+                        <div class="list-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        Dedicated claim support team
+                    </li>
+                    <li>
+                        <div class="list-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </div>
+                        IRDAI regulated & fully compliant
+                    </li>
+                </ul>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Join VehicleShield</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== INSURANCE TYPES ========== -->
+<section class="insurance-types" id="insurance-types">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Coverage Plans</div>
+            <h2 class="section-title">Choose the Right <span class="gradient-text">Insurance Plan</span></h2>
+            <p class="section-desc">Flexible insurance solutions tailored to meet every driver's unique needs and budget.</p>
+        </div>
+        <div class="plans-grid">
+            <div class="plan-card" data-plan="basic">
+                <div class="plan-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
+                </div>
+                <h3>Third Party</h3>
+                <p class="plan-desc">Basic mandatory coverage that protects you against third-party liabilities. Ideal for older vehicles.</p>
+                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">₹2,094/yr</span></div>
+                <ul class="plan-features">
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#3ECFCF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Third-party liability</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#3ECFCF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Property damage cover</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#3ECFCF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Legal compliance</li>
+                    <li class="plan-feat-no"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#666" stroke-width="2" stroke-linecap="round" /></svg> Own damage cover</li>
+                </ul>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-outline plan-btn">Get This Plan</a>
+            </div>
+            <div class="plan-card plan-popular" data-plan="comprehensive">
+                <div class="plan-popular-badge">Most Popular</div>
+                <div class="plan-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M20 8H4L2 14v4h20v-4L20 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2" /><circle cx="17" cy="18" r="2" stroke="currentColor" stroke-width="2" /></svg>
+                </div>
+                <h3>Comprehensive</h3>
+                <p class="plan-desc">All-inclusive protection covering your vehicle and third-party liabilities. The complete package for peace of mind.</p>
+                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">₹7,500/yr</span></div>
+                <ul class="plan-features">
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Own damage cover</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Third-party liability</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Theft & fire protection</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Natural disaster cover</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#6C63FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Zero depreciation add-on</li>
+                </ul>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-primary plan-btn">Get This Plan</a>
+            </div>
+            <div class="plan-card" data-plan="premium">
+                <div class="plan-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
+                </div>
+                <h3>Premium Elite</h3>
+                <p class="plan-desc">The ultimate protection package with maximum coverage, zero depreciation, and priority claim handling.</p>
+                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">₹14,000/yr</span></div>
+                <ul class="plan-features">
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Everything in Comprehensive</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Roadside assistance</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Priority claim settlement</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Engine protection</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Dedicated relationship manager</li>
+                </ul>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-outline plan-btn">Get This Plan</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Simple Process</div>
+            <h2 class="section-title">Get Insured in <span class="gradient-text">3 Easy Steps</span></h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" /></svg>
+                </div>
+                <h3>Register & Fill Form</h3>
+                <p>Create your account and fill in your vehicle and personal details in our simple online form.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" /><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2" /></svg>
+                </div>
+                <h3>Choose Your Plan</h3>
+                <p>Compare our insurance plans and select the one that best fits your needs and budget.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </div>
+                <h3>Get Instant Coverage</h3>
+                <p>Complete payment and receive your policy document instantly. Drive protected from day one!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Customer Stories</div>
+            <h2 class="section-title">What Our <span class="gradient-text">Customers Say</span></h2>
+            <p class="section-desc">Real experiences from thousands of satisfied VehicleShield customers across India.</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card tc-featured">
+                <div class="tc-quote">"</div>
+                <p class="tc-text">VehicleShield made the entire insurance process effortless. When I had an accident last year, their claim team responded within hours and settled everything in just 3 days. Absolutely outstanding service!</p>
+                <div class="tc-author">
+                    <div class="tc-avatar av1">RK</div>
+                    <div>
+                        <p class="tc-name">Rajesh Kumar</p>
+                        <p class="tc-role">Business Owner, Delhi</p>
+                    </div>
+                    <div class="tc-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="tc-quote">"</div>
+                <p class="tc-text">The online portal is incredibly user-friendly. I renewed my policy in less than 2 minutes. Best insurance experience I've ever had!</p>
+                <div class="tc-author">
+                    <div class="tc-avatar av2">PM</div>
+                    <div>
+                        <p class="tc-name">Priya Mehta</p>
+                        <p class="tc-role">Software Engineer, Bangalore</p>
+                    </div>
+                    <div class="tc-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="tc-quote">"</div>
+                <p class="tc-text">Competitive pricing and transparent terms. No hidden charges whatsoever. The comprehensive plan covers everything I need. Highly recommend!</p>
+                <div class="tc-author">
+                    <div class="tc-avatar av3">AS</div>
+                    <div>
+                        <p class="tc-name">Arjun Sharma</p>
+                        <p class="tc-role">Doctor, Mumbai</p>
+                    </div>
+                    <div class="tc-stars">★★★★★</div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="tc-quote">"</div>
+                <p class="tc-text">Their 24/7 support team is always available. I had a late-night breakdown and they arranged roadside assistance within 20 minutes. Truly remarkable!</p>
+                <div class="tc-author">
+                    <div class="tc-avatar av4">NK</div>
+                    <div>
+                        <p class="tc-name">Nisha Kapoor</p>
+                        <p class="tc-role">Teacher, Pune</p>
+                    </div>
+                    <div class="tc-stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SITEMAP ========== -->
+<section class="sitemap-section" id="sitemap">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Site Navigation</div>
+            <h2 class="section-title">Site <span class="gradient-text">Map</span></h2>
+        </div>
+        <div class="sitemap-grid">
+            <div class="sitemap-col">
+                <h4>Main Pages</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#insurance-types">Insurance Types</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="sitemap-col">
+                <h4>Customer Portal</h4>
+                <ul>
+                    <li><a asp-controller="Account" asp-action="Login">Customer Login</a></li>
+                    <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                    <li><a asp-controller="Customer" asp-action="Index">Dashboard</a></li>
+                    <li><a asp-controller="Customer" asp-action="MyPolicies">My Policies</a></li>
+                    <li><a asp-controller="Customer" asp-action="MyClaims">My Claims</a></li>
+                </ul>
+            </div>
+            <div class="sitemap-col">
+                <h4>Admin Panel</h4>
+                <ul>
+                    <li><a asp-controller="AdminDashboard" asp-action="Index">Admin Dashboard</a></li>
+                    <li><a asp-controller="Customers" asp-action="Index">Customers</a></li>
+                    <li><a asp-controller="Vehicles" asp-action="Index">Vehicles</a></li>
+                    <li><a asp-controller="Policies" asp-action="Index">Policies</a></li>
+                    <li><a asp-controller="Reports" asp-action="Index">Reports</a></li>
+                </ul>
+            </div>
+            <div class="sitemap-col">
+                <h4>Insurance Plans</h4>
+                <ul>
+                    <li><a href="#insurance-types">Third Party</a></li>
+                    <li><a href="#insurance-types">Comprehensive</a></li>
+                    <li><a href="#insurance-types">Premium Elite</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="section-tag">Get In Touch</div>
+                <h2 class="section-title">We're Here to <span class="gradient-text">Help You</span></h2>
+                <p class="contact-desc">Have questions about our insurance plans? Our expert team is always ready to assist you with the best advice and support.</p>
+                <div class="contact-items">
+                    <div class="contact-item">
+                        <div class="ci-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16.92v2.08a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.5 10.8 19.79 19.79 0 011.43 2.18 2 2 0 013.5 0h2.08a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l.87-.87a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0121 16.92z" stroke="currentColor" stroke-width="2" /></svg>
+                        </div>
+                        <div>
+                            <p class="ci-label">Phone</p>
+                            <p class="ci-val">+91 1800-123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="ci-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2" /><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="2" /></svg>
+                        </div>
+                        <div>
+                            <p class="ci-label">Email</p>
+                            <p class="ci-val">support@vehicleshield.in</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="ci-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2" /><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2" /></svg>
+                        </div>
+                        <div>
+                            <p class="ci-label">Address</p>
+                            <p class="ci-val">Insurance Tower, Connaught Place, New Delhi - 110001</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form-wrap">
+                <form class="contact-form" id="contactForm" asp-controller="Home" asp-action="SubmitContact" method="post">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactName">Full Name</label>
+                            <input type="text" id="contactName" name="contactName" placeholder="Your full name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number</label>
+                            <input type="tel" id="contactPhone" name="contactPhone" placeholder="+91 XXXXX XXXXX" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" name="contactEmail" placeholder="your@email.com" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <select id="contactSubject" name="contactSubject" required>
+                            <option value="">Select a subject</option>
+                            <option>New Policy Inquiry</option>
+                            <option>Claim Assistance</option>
+                            <option>Policy Renewal</option>
+                            <option>General Query</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="contactMessage" rows="4" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M22 2L15 22 11 13 2 9l20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== CTA BANNER ========== -->
+<section class="cta-banner">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Protect Your Vehicle?</h2>
+            <p>Join 50,000+ satisfied customers. Get insured today in just minutes.</p>
+            <div class="cta-actions">
+                <a asp-controller="Account" asp-action="Register" class="btn btn-white">Get Started Free</a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-white">Login to Account</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,154 @@
+@model VehicleShield.Models.ViewModels.LoginVM
+@{
+    Layout = null; // Don't use standard _Layout
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login – VehicleShield Insurance Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="auth-bg">
+        <div class="auth-orb orb-1"></div>
+        <div class="auth-orb orb-2"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <div class="auth-layout">
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <a asp-controller="Home" asp-action="Index" class="auth-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none"><path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" fill="url(#lg1)"/><path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="lg1" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#3ECFCF"/></linearGradient></defs></svg>
+                </div>
+                VehicleShield
+            </a>
+            <div class="auth-left-content">
+                <h1>Welcome Back to<br/><span class="gradient-text">VehicleShield</span></h1>
+                <p>Your trusted vehicle insurance partner. Manage your policies, file claims, and stay protected — all in one place.</p>
+                <div class="auth-features">
+                    <div class="auth-feat">
+                        <div class="af-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#6C63FF" stroke-width="2"/></svg>
+                        </div>
+                        <div>
+                            <p class="af-title">Secure Portal</p>
+                            <p class="af-desc">Bank-grade 256-bit encryption</p>
+                        </div>
+                    </div>
+                    <div class="auth-feat">
+                        <div class="af-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#3ECFCF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div>
+                            <p class="af-title">Instant Access</p>
+                            <p class="af-desc">Real-time policy updates</p>
+                        </div>
+                    </div>
+                    <div class="auth-feat">
+                        <div class="af-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#F7C948" stroke-width="2"/><path d="M12 6v6l4 2" stroke="#F7C948" stroke-width="2" stroke-linecap="round"/></svg>
+                        </div>
+                        <div>
+                            <p class="af-title">24/7 Available</p>
+                            <p class="af-desc">Always at your service</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right">
+            <div class="auth-card">
+                
+
+                <div class="auth-form-header">
+                    <h2>Sign In</h2>
+                    <p>Enter your credentials to access your account</p>
+                </div>
+
+                <!-- Form -->
+                <form asp-controller="Account" asp-action="Login" method="post" id="loginForm" class="auth-form">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Role" id="selectedRole" value="Customer" />
+
+                    <div asp-validation-summary="ModelOnly" style="color: #ff6b6b; font-size: 0.85rem; margin-bottom: 15px;"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Username">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/></svg>
+                            Username
+                        </label>
+                        <input type="text" asp-for="Username" placeholder="Enter your username" required autocomplete="username" />
+                        <span asp-validation-for="Username" style="color: #ff6b6b; font-size: 0.75rem;"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            Password
+                        </label>
+                        <div class="input-with-toggle">
+                            <input type="password" asp-for="Password" placeholder="Enter your password" required autocomplete="current-password" />
+                            <button type="button" class="toggle-pwd" onclick="togglePassword('Password', this)" aria-label="Toggle password">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" style="color: #ff6b6b; font-size: 0.75rem;"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" asp-for="RememberMe" />
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-auth" id="loginBtn">
+                        <span>Sign In</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+
+
+                </form>
+
+                <p class="auth-switch">
+                    Don't have an account? <a asp-controller="Account" asp-action="Register">Create Account</a>
+                </p>
+                <a asp-controller="Home" asp-action="Index" class="back-home">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="~/js/auth.js" asp-append-version="true"></script>
+    <script>
+        function setRole(role) {
+            document.getElementById('selectedRole').value = role === 'admin' ? 'Admin' : 'Customer';
+            
+            const customerBtn = document.getElementById('roleCustomer');
+            const adminBtn = document.getElementById('roleAdmin');
+            
+            if(role === 'admin') {
+                adminBtn.classList.add('active');
+                customerBtn.classList.remove('active');
+            } else {
+                customerBtn.classList.add('active');
+                adminBtn.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

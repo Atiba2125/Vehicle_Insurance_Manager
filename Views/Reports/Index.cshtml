@@ -1,0 +1,14 @@
+@{ ViewData["Title"] = "Reports"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px; align-items:flex-start;">
+    <div class="auth-card" style="max-width: 1200px; width: 100%;">
+        <h2>Management Reports</h2>
+        <p>This section provides analytical reports and insights into system operations.</p>
+        <div class="d-flex" style="gap:20px; flex-wrap:wrap; margin-top:30px;">
+            <a asp-action="MonthlySales" class="btn-auth" style="width:200px;">Monthly Sales</a>
+            <a asp-action="VehicleAnalysis" class="btn-auth" style="width:200px;">Vehicle Analysis</a>
+            <a asp-action="ClaimsReport" class="btn-auth" style="width:200px;">Claims Report</a>
+            <a asp-action="Renewals" class="btn-auth" style="width:200px;">Due Renewals</a>
+            <a asp-action="Lapsed" class="btn-auth" style="width:200px;">Lapsed Policies</a>
+        </div>
+    </div>
+</div>

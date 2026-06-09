@@ -1,0 +1,108 @@
+@model List<VehicleShield.Models.Claim>
+@{
+    ViewData["Title"] = "My Claims";
+    Layout = "_CustomerLayout";
+    var activePolicies = ViewBag.ActivePolicies as List<VehicleShield.Models.Policy> ?? new List<VehicleShield.Models.Policy>();
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Claims Settlement</h1>
+        <p>File a new claim or track the status of your submitted claims</p>
+    </div>
+</div>
+
+<div class="content-grid cols-3-2">
+    <!-- List of Claims -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Claim Records</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Claim No.</th>
+                                <th>Policy No.</th>
+                                <th>Date Filed</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model)
+                            {
+                                <tr>
+                                    <td style="font-weight: 700; color: #fff;">@claim.ClaimNumber</td>
+                                    <td style="font-size: 0.8rem; color: var(--text-muted);">@claim.PolicyNumber</td>
+                                    <td style="font-size: 0.82rem;">@claim.DateFiled.ToString("MMM dd, yyyy")</td>
+                                    <td style="font-weight: 600; color: #fff;">₹@claim.ClaimableAmount.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge @(claim.Status == "Approved" ? "badge-active" : (claim.Status == "Pending" ? "badge-pending" : "badge-inactive"))">@claim.Status</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p style="color: var(--text-muted); text-align: center; padding: 20px;">No claim request history found.</p>
+            }
+        </div>
+    </div>
+
+    <!-- File New Claim Form -->
+    <div class="card" style="height: fit-content;">
+        <div class="card-header">
+            <h3>Initiate New Claim</h3>
+        </div>
+        <div class="card-body">
+            @if (activePolicies.Any())
+            {
+                <form asp-action="InitiateClaim" method="post" style="display:flex; flex-direction:column; gap:16px;">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group" style="padding:0;">
+                        <label for="policyId" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Select Active Policy</label>
+                        <select id="policyId" name="policyId" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;">
+                            @foreach (var policy in activePolicies)
+                            {
+                                <option value="@policy.PolicyId">@policy.VehicleName (@policy.PolicyNumber) - Valued at ₹@policy.VehicleRate.ToString("N0")</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="padding:0;">
+                        <label for="placeOfAccident" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Place of Accident</label>
+                        <input type="text" id="placeOfAccident" name="placeOfAccident" placeholder="Enter location of accident" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+
+                    <div class="form-group" style="padding:0;">
+                        <label for="dateOfAccident" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Date of Accident</label>
+                        <input type="date" id="dateOfAccident" name="dateOfAccident" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+
+                    <div class="form-group" style="padding:0;">
+                        <label for="claimableAmount" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Claimable Amount Required (in ₹)</label>
+                        <input type="number" id="claimableAmount" name="claimableAmount" placeholder="e.g. 45000" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="justify-content:center; padding:12px; font-weight:700; margin-top:5px;">
+                        File Claim Request
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div style="background:rgba(255,107,107,0.06); border:1px solid rgba(255,107,107,0.15); border-radius:10px; padding:15px; text-align:center; color:var(--danger); font-size:0.85rem;">
+                    You do not have any active policies to file a claim. You must purchase a policy first.
+                </div>
+            }
+        </div>
+    </div>
+</div>

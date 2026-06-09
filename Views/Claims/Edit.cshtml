@@ -1,0 +1,14 @@
+@model VehicleShield.Models.Claim
+@{ ViewData["Title"] = "Edit Claim"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
+    <div class="auth-card" style="max-width: 600px; width: 100%;">
+        <h2>Edit Claim</h2>
+        <form asp-action="Edit" method="post" class="auth-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
+            <input type="hidden" asp-for="ClaimId" />
+            <p class="text-muted">Edit form for Claim.</p>
+            <div class="form-group"><button type="submit" class="btn-auth">Save</button></div>
+        </form>
+        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+    </div>
+</div>

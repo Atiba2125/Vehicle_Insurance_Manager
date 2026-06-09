@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Buy Policy";
+    Layout = "_CustomerLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Purchase Insurance Policy</h1>
+        <p>Enter vehicle specifications, select your plan, and instantly activate coverage</p>
+    </div>
+</div>
+
+<div class="content-grid cols-3-2">
+    <!-- Purchase Form -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Vehicle & Policy Specifications</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="BuyPolicy" method="post" id="buyForm" style="display:flex; flex-direction:column; gap:18px;">
+                @Html.AntiForgeryToken()
+
+                <h4 style="color:var(--primary); font-family:'Outfit',sans-serif; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px;">Vehicle Information</h4>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div class="form-group" style="padding:0;">
+                        <label for="vehicleName" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Vehicle Maker Name</label>
+                        <input type="text" id="vehicleName" name="vehicleName" placeholder="e.g. Toyota" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                    <div class="form-group" style="padding:0;">
+                        <label for="vehicleModel" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Vehicle Model Name</label>
+                        <input type="text" id="vehicleModel" name="vehicleModel" placeholder="e.g. Fortuner" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div class="form-group" style="padding:0;">
+                        <label for="vehicleVersion" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Vehicle Variant/Version</label>
+                        <input type="text" id="vehicleVersion" name="vehicleVersion" placeholder="e.g. 2.8L 4x4" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                    <div class="form-group" style="padding:0;">
+                        <label for="vehicleRate" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Vehicle Rate (IDV Value in ₹)</label>
+                        <input type="number" id="vehicleRate" name="vehicleRate" placeholder="e.g. 3800000" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" oninput="calculateEstimate()" />
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                    <div class="form-group" style="padding:0;">
+                        <label for="vehicleNumber" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Register Number</label>
+                        <input type="text" id="vehicleNumber" name="vehicleNumber" placeholder="DL-3C-AB-1234" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                    <div class="form-group" style="padding:0;">
+                        <label for="bodyNumber" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Body Number</label>
+                        <input type="text" id="bodyNumber" name="bodyNumber" placeholder="Body/Chassis No" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                    <div class="form-group" style="padding:0;">
+                        <label for="engineNumber" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Engine Number</label>
+                        <input type="text" id="engineNumber" name="engineNumber" placeholder="Engine No" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                    </div>
+                </div>
+
+                <h4 style="color:var(--primary); font-family:'Outfit',sans-serif; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:6px; margin-top:10px;">Policy Configuration</h4>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div class="form-group" style="padding:0;">
+                        <label for="policyType" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Insurance Type</label>
+                        <select id="policyType" name="policyType" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" onchange="calculateEstimate()">
+                            <option value="Comprehensive">Comprehensive Cover (5% IDV)</option>
+                            <option value="Third Party">Third Party Cover (1.5% IDV)</option>
+                            <option value="Premium Elite">Premium Elite (8% IDV)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="padding:0;">
+                        <label for="durationYears" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Policy Duration</label>
+                        <select id="durationYears" name="durationYears" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" onchange="calculateEstimate()">
+                            <option value="1">1 Year</option>
+                            <option value="2">2 Years</option>
+                            <option value="3">3 Years</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="padding:0;">
+                    <label for="customerAddProve" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Address Proof Details (Aadhaar/Voter ID No.)</label>
+                    <input type="text" id="customerAddProve" name="customerAddProve" placeholder="e.g. Aadhaar Card: 1234-5678-9012" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="justify-content:center; padding:12px; font-weight:700; margin-top:10px;">
+                    Proceed to Purchase (Simulated Payment)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Estimate & Summary -->
+    <div class="card" style="height: fit-content;">
+        <div class="card-header">
+            <h3>Premium Estimate</h3>
+        </div>
+        <div class="card-body">
+            <div style="background:rgba(108,99,255,0.06); border:1px dashed var(--primary); border-radius:12px; padding:20px; text-align:center; margin-bottom:20px;">
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:5px;">Estimated Premium</p>
+                <h2 id="estAmount" style="font-family:'Outfit',sans-serif; font-size:2rem; font-weight:900; color:#fff;">₹0</h2>
+                <p id="estSub" style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;">Based on 1 Year Comprehensive plan</p>
+            </div>
+            
+            <h4 style="font-family:'Outfit',sans-serif; font-size:0.9rem; color:#fff; margin-bottom:10px;">Plan Rules</h4>
+            <ul style="color:var(--text-muted); font-size:0.8rem; padding-left:16px; display:flex; flex-direction:column; gap:8px;">
+                <li>Comprehensive rate is calculated as 5.0% of vehicle's value annually.</li>
+                <li>Third Party rate is calculated as 1.5% of vehicle's value annually.</li>
+                <li>Premium Elite rate is calculated as 8.0% of vehicle's value annually.</li>
+                <li>A copy of your insurance policy and paid invoice will be generated instantly upon submission.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function calculateEstimate() {
+            const vehicleRate = parseFloat(document.getElementById('vehicleRate').value) || 0;
+            const policyType = document.getElementById('policyType').value;
+            const durationYears = parseInt(document.getElementById('durationYears').value) || 1;
+
+            let ratePercentage = 0.05; // default Comprehensive
+            if (policyType === 'Third Party') {
+                ratePercentage = 0.015;
+            } else if (policyType === 'Premium Elite') {
+                ratePercentage = 0.08;
+            }
+
+            const estimatedPremium = vehicleRate * ratePercentage * durationYears;
+            
+            document.getElementById('estAmount').textContent = '₹' + estimatedPremium.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+            document.getElementById('estSub').textContent = `Based on ${durationYears} Year(s) ${policyType} plan`;
+        }
+    </script>
+}

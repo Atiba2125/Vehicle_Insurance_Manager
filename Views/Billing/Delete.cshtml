@@ -1,0 +1,15 @@
+@model VehicleShield.Models.Billing
+@{ ViewData["Title"] = "Delete Billing"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
+    <div class="auth-card" style="max-width: 800px; width: 100%;">
+        <h2>Delete Billing</h2>
+        <h3 style="color:#ff6b6b; margin-bottom:20px;">Are you sure you want to delete this?</h3>
+        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl>
+            <form asp-action="Delete" method="post" style="margin-top:20px;">
+                <input type="hidden" asp-for="BillingId" />
+                <button type="submit" class="btn-auth" style="background:#ff6b6b; width:150px; display:inline-flex; margin-right:10px;">Delete</button>
+                <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+            </form>
+        </div>
+    </div>
+</div>

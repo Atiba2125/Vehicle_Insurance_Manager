@@ -1,0 +1,13 @@
+@model VehicleShield.Models.Expense
+@{ ViewData["Title"] = "Create Expense"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
+    <div class="auth-card" style="max-width: 600px; width: 100%;">
+        <h2>Create Expense</h2>
+        <form asp-action="Create" method="post" class="auth-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
+            <p class="text-muted">Form generated for Expense. Update properties manually.</p>
+            <div class="form-group"><button type="submit" class="btn-auth">Create</button></div>
+        </form>
+        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+@model IEnumerable<VehicleShield.Models.Policy>
+@{ ViewData["Title"] = "Policies"; }
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px; align-items:flex-start;">
+    <div class="auth-card" style="max-width: 1200px; width: 100%;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Manage Policies</h2>
+            <a asp-action="Create" class="btn-auth" style="width: auto; padding: 10px 20px;">Create New</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead style="background: linear-gradient(135deg, #6C63FF 0%, #3ECFCF 100%); color: white;">
+                    <tr><th>ID</th><th>Details</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>#</td>
+                            <td>@item.ToString()</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-primary" style="margin-right:5px;">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-info" style="margin-right:5px;">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+@model IEnumerable<VehicleShield.Models.Customer>
+@{
+    ViewData["Title"] = "Customer Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Customers List</h1>
+        <p>View and manage all registered clients and profile details</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="Create" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Customer
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Customer Records</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CustomerId</td>
+                            <td style="font-weight: 700; color: #fff;">@item.CustomerName</td>
+                            <td>@item.CustomerAddress</td>
+                            <td>@item.CustomerPhone</td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm" style="color: var(--danger); border-color: rgba(255,107,107,0.2);">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+@model List<VehicleShield.Models.Policy>
+@{
+    ViewData["Title"] = "My Policies";
+    Layout = "_CustomerLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>My Policies</h1>
+        <p>Manage all your active and past vehicle insurance policies</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="BuyPolicy" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Buy New Policy
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Insurance Policies Portfolio</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Policy Number</th>
+                            <th>Vehicle Details</th>
+                            <th>Plan Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var policy in Model)
+                        {
+                            <tr>
+                                <td style="font-weight: 700; color: #fff;">@policy.PolicyNumber</td>
+                                <td>
+                                    <div style="font-weight: 600;">@policy.VehicleName</div>
+                                    <div style="font-size: 0.72rem; color: var(--text-muted);">No: @policy.VehicleNumber</div>
+                                </td>
+                                <td>@policy.PolicyType</td>
+                                <td style="font-size: 0.82rem;">@policy.PolicyDate.ToString("MMM dd, yyyy")</td>
+                                <td style="font-size: 0.82rem;">@policy.PolicyEndDate.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    <span class="badge @(policy.Status == "Active" ? "badge-active" : "badge-inactive")">@policy.Status</span>
+                                </td>
+                                <td>
+                                    <a asp-action="PolicyDetails" asp-route-id="@policy.PolicyId" class="btn btn-outline btn-sm">View Invoices</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <p style="margin-bottom: 20px;">You don't have any vehicle insurance policies yet.</p>
+                <a asp-action="BuyPolicy" class="btn btn-primary">Get Insured Now</a>
+            </div>
+        }
+    </div>
+</div>

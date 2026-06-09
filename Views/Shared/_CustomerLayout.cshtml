@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – VehicleShield Customer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- ========== SIDEBAR ========== -->
+        <aside class="sidebar" id="sidebar">
+            <a asp-controller="Home" asp-action="Index" class="sidebar-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" fill="url(#sl1)" />
+                        <path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="sl1" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#6C63FF" />
+                                <stop offset="1" stop-color="#3ECFCF" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                VehicleShield
+            </a>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" style="background:linear-gradient(135deg,#6C63FF,#3ECFCF)">C</div>
+                <div>
+                    <p class="user-name">@User.Identity?.Name</p>
+                    <p class="user-role">Customer</p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <span class="nav-section-label">Main</span>
+                <a asp-controller="Customer" asp-action="Index" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" /><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" /><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" /><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2" /></svg>
+                    Dashboard
+                </a>
+
+                <span class="nav-section-label">Insurance</span>
+                <a asp-controller="Customer" asp-action="MyPolicies" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyPolicies" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
+                    My Policies
+                </a>
+                <a asp-controller="Customer" asp-action="BuyPolicy" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "BuyPolicy" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" /><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                    Buy New Policy
+                </a>
+                <a asp-controller="Customer" asp-action="MyClaims" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyClaims" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2" /><path d="M14 2v6h6M9 15l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    My Claims
+                </a>
+
+                <span class="nav-section-label">Account</span>
+                <a asp-controller="Account" asp-action="ChangePassword" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ChangePassword" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2" /><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                    Change Password
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" style="width: 100%;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="sidebar-logout" style="width:100%; border:none; background:none; cursor:pointer; text-align:left;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        Sign Out
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+        <!-- ========== MAIN CONTENT ========== -->
+        <div class="main-content">
+            <header class="topbar">
+                <button class="topbar-menu-btn" onclick="openSidebar()" aria-label="Menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                </button>
+                <span class="topbar-title">@ViewData["Title"]</span>
+                <div class="topbar-search">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" /><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                    <input type="text" placeholder="Search policies, claims..." />
+                </div>
+                <div class="topbar-actions">
+                    <button class="topbar-btn" aria-label="Notifications" onclick="showToast('🔔 Welcome to VehicleShield. Your portal is fully secure.')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+                    </button>
+                    <div class="topbar-btn" style="width:auto;padding:0 10px;gap:6px;font-size:0.8rem;font-weight:600;color:var(--text);">
+                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#6C63FF,#3ECFCF);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff">RK</div>
+                        Customer
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                @RenderBody()
+
+                <!-- Footer -->
+                <footer class="dashboard-footer">
+                    <div class="footer-left">
+                        © 2026 VehicleShield Insurance. All rights reserved.
+                    </div>
+                    <div class="footer-right">
+                        <div class="system-status">
+                            <span class="status-dot"></span>
+                            Secure Portal
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        }
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+        }
+
+        // Show controller TempData notifications
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>showToast("@Html.Raw(TempData["SuccessMessage"])");</text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>showToast("@Html.Raw(TempData["ErrorMessage"])");</text>
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

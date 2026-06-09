@@ -1,0 +1,46 @@
+@model VehicleShield.Models.Customer
+@{
+    ViewData["Title"] = "Delete Customer";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Delete Customer Profile</h1>
+        <p>Warning: Deleting this profile will remove associated vehicle and policy records.</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="Index" class="btn btn-outline">Back to List</a>
+    </div>
+</div>
+
+<div class="card" style="max-width: 600px; margin: 0 auto; border-color: rgba(255,107,107,0.3);">
+    <div class="card-header" style="background: rgba(255,107,107,0.06);">
+        <h3 style="color: var(--danger);">Are you absolutely sure?</h3>
+    </div>
+    <div class="card-body">
+        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom: 24px;">
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color:var(--text-muted); font-size:0.85rem;">Customer Name</span>
+                <span style="color:#fff; font-weight:600;">@Model.CustomerName</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color:var(--text-muted); font-size:0.85rem;">Customer Address</span>
+                <span style="color:#fff;">@Model.CustomerAddress</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color:var(--text-muted); font-size:0.85rem;">Phone Number</span>
+                <span style="color:#fff;">@Model.CustomerPhone</span>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" style="display:flex; gap:10px;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="CustomerId" />
+            <button type="submit" class="btn btn-primary" style="background:var(--danger); border-color:var(--danger); flex:1; justify-content:center;">
+                Confirm Delete Profile
+            </button>
+            <a asp-action="Index" class="btn btn-outline" style="flex:1; justify-content:center;">Cancel</a>
+        </form>
+    </div>
+</div>

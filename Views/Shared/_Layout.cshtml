@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – VehicleShield</title>
+    <meta name="description" content="VehicleShield offers comprehensive vehicle insurance solutions. Protect your vehicle with our smart, affordable, and reliable insurance policies online." />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a asp-controller="Home" asp-action="Index" class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" fill="url(#logoGrad)" />
+                        <path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logoGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#6C63FF" />
+                                <stop offset="1" stop-color="#3ECFCF" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span>VehicleShield</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/#home" class="nav-link active">Home</a></li>
+                <li><a href="/#about" class="nav-link">About Us</a></li>
+                <li><a href="/#insurance-types" class="nav-link">Insurance Types</a></li>
+                <li><a href="/#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="/#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="/#sitemap" class="nav-link">Site Map</a></li>
+            </ul>
+            <div class="nav-actions" style="position:relative;">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <div class="user-dropdown">
+                        <button class="btn btn-primary dropdown-toggle" id="userMenuBtn" onclick="document.getElementById('userDropdownMenu').style.display = document.getElementById('userDropdownMenu').style.display === 'none' ? 'flex' : 'none';">
+                            Hi, @User.Identity.Name ▼
+                        </button>
+                        <div class="dropdown-menu" id="userDropdownMenu" style="display:none; position:absolute; right:0; top:110%; background:white; padding:10px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); flex-direction:column; min-width:180px; z-index:1000; border: 1px solid #eee;">
+                            <a href="/" style="padding:8px 12px; color:#333; text-decoration:none; display:block; border-radius:4px;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">Home</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="AdminDashboard" asp-action="Index" style="padding:8px 12px; color:#333; text-decoration:none; display:block; border-radius:4px;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">View Dashboard</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Customer" asp-action="Index" style="padding:8px 12px; color:#333; text-decoration:none; display:block; border-radius:4px;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">View Dashboard</a>
+                            }
+                            <hr style="margin:5px 0; border:none; border-top:1px solid #eee;" />
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" style="width:100%; text-align:left; background:none; border:none; padding:8px 12px; color:#ff6b6b; cursor:pointer; font-weight:500; border-radius:4px;" onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background='transparent'">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function(event) {
+                            var isClickInside = document.getElementById('userMenuBtn').contains(event.target) || document.getElementById('userDropdownMenu').contains(event.target);
+                            if (!isClickInside) {
+                                document.getElementById('userDropdownMenu').style.display = 'none';
+                            }
+                        });
+                    </script>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-ghost">Login</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Get Started</a>
+                }
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    @RenderBody()
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a asp-controller="Home" asp-action="Index" class="nav-logo footer-logo">
+                        <div class="logo-icon">
+                            <svg viewBox="0 0 40 40" fill="none">
+                                <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" fill="url(#fLogoGrad)" />
+                                <path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <defs>
+                                    <linearGradient id="fLogoGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#6C63FF" />
+                                        <stop offset="1" stop-color="#3ECFCF" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span>VehicleShield</span>
+                    </a>
+                    <p>Protecting vehicles, securing futures. India's most trusted vehicle insurance platform since 2009.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook">f</a>
+                        <a href="#" class="social-link" aria-label="Twitter">t</a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">in</a>
+                        <a href="#" class="social-link" aria-label="Instagram">ig</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#home">Home</a></li>
+                        <li><a href="/#about">About Us</a></li>
+                        <li><a href="/#insurance-types">Insurance Plans</a></li>
+                        <li><a href="/#testimonials">Testimonials</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Insurance Plans</h4>
+                    <ul>
+                        <li><a href="/#insurance-types">Third Party Insurance</a></li>
+                        <li><a href="/#insurance-types">Comprehensive Insurance</a></li>
+                        <li><a href="/#insurance-types">Premium Elite</a></li>
+                        <li><a href="/#insurance-types">Add-on Covers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/#contact">Claim Process</a></li>
+                        <li><a href="/#contact">Renew Policy</a></li>
+                        <li><a href="/#contact">FAQ</a></li>
+                        <li><a href="/#contact">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 VehicleShield Insurance. All rights reserved. Registered with IRDAI (Reg. No. 123456)</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="~/js/landing.js" asp-append-version="true"></script>
+    <script>
+        // Check for TempData success message and show toast
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                showToast("@Html.Raw(TempData["SuccessMessage"])");
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                showToast("@Html.Raw(TempData["ErrorMessage"])");
+            </text>
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (toast) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
