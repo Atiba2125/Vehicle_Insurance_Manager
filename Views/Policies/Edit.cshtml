@@ -1,14 +1,127 @@
 @model VehicleShield.Models.Policy
-@{ ViewData["Title"] = "Edit Policy"; }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 600px; width: 100%;">
-        <h2>Edit Policy</h2>
-        <form asp-action="Edit" method="post" class="auth-form">
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
-            <input type="hidden" asp-for="PolicyId" />
-            <p class="text-muted">Edit form for Policy.</p>
-            <div class="form-group"><button type="submit" class="btn-auth">Save</button></div>
-        </form>
-        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
+@{
+    ViewData["Title"] = "Edit Policy";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Edit Policy</h1>
+        <p>Update insurance policy information</p>
     </div>
+
+    ```
+    <div class="page-header-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            Back to List
+        </a>
+    </div>
+    ```
+
+</div>
+
+<div class="card" style="max-width:900px; margin:0 auto;">
+
+    ```
+    <div class="card-header">
+        <h3>Edit Policy Form</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Edit" method="post" style="display:flex; flex-direction:column; gap:16px;">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="PolicyId" />
+
+            <div asp-validation-summary="ModelOnly"
+                 style="color:#ff6b6b; font-size:0.85rem;">
+            </div>
+
+            <div class="form-group" style="padding:0;">
+                <label style="color:var(--text-muted); font-size:.85rem; margin-bottom:6px; display:block;">
+                    Policy Date
+                </label>
+
+                <input asp-for="PolicyDate"
+                       type="date"
+                       class="form-control"
+                       style="width:100%; padding:12px; border-radius:10px;" />
+            </div>
+
+            <div class="form-group" style="padding:0;">
+                <label style="color:var(--text-muted); font-size:.85rem; margin-bottom:6px; display:block;">
+                    Policy Duration (Years)
+                </label>
+
+                <input asp-for="PolicyDurationYears"
+                       class="form-control"
+                       style="width:100%; padding:12px; border-radius:10px;" />
+            </div>
+
+            <div class="form-group" style="padding:0;">
+                <label style="color:var(--text-muted); font-size:.85rem; margin-bottom:6px; display:block;">
+                    Policy Type
+                </label>
+
+                <select asp-for="PolicyType"
+                        class="form-control"
+                        style="width:100%; padding:12px; border-radius:10px;">
+
+                    <option value="Third Party">Third Party</option>
+                    <option value="Comprehensive">Comprehensive</option>
+                    <option value="Premium Elite">Premium Elite</option>
+
+                </select>
+            </div>
+
+            <div class="form-group" style="padding:0;">
+                <label style="color:var(--text-muted); font-size:.85rem; margin-bottom:6px; display:block;">
+                    Status
+                </label>
+
+                <select asp-for="Status"
+                        class="form-control"
+                        style="width:100%; padding:12px; border-radius:10px;">
+
+                    <option value="Active">Active</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Lapsed">Lapsed</option>
+
+                </select>
+            </div>
+
+            <div class="form-group" style="padding:0;">
+                <label style="color:var(--text-muted); font-size:.85rem; margin-bottom:6px; display:block;">
+                    Address Proof
+                </label>
+
+                <input asp-for="CustomerAddProve"
+                       class="form-control"
+                       style="width:100%; padding:12px; border-radius:10px;" />
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:10px;">
+
+                <button type="submit"
+                        class="btn btn-primary"
+                        style="flex:1; justify-content:center; padding:12px;">
+                    Save Changes
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline"
+                   style="flex:1; text-align:center;">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+    ```
+
 </div>

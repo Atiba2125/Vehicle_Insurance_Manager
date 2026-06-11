@@ -18,6 +18,7 @@ namespace VehicleShield.Data
         public DbSet<Billing> Billings { get; set; }
         public DbSet<Claim> Claims { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

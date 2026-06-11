@@ -1,12 +1,169 @@
 @model VehicleShield.Models.Policy
-@{ ViewData["Title"] = "Details Policy"; }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 800px; width: 100%;">
-        <h2>Policy Details</h2>
-        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl></div>
-        <div style="margin-top:20px;">
-            <a asp-action="Edit" asp-route-id="@Model?.GetType().GetProperty("PolicyId")?.GetValue(Model)" class="btn-auth" style="width:100px; display:inline-flex; margin-right:10px;">Edit</a>
-            <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
+@{
+    ViewData["Title"] = "Policy Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Policy Details</h1>
+        <p>Comprehensive overview of insurance policy information</p>
+    </div>
+
+    <div class="page-header-actions">
+        <a asp-action="Edit"
+           asp-route-id="@Model.PolicyId"
+           class="btn btn-primary">
+            Edit Policy
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+    gap:20px;
+    margin-top:20px;
+    margin-bottom:20px;">
+
+    <!-- Policy Information -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Policy Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Policy Number</span>
+                    <strong>@Model.PolicyNumber</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Policy Type</span>
+                    <strong>@Model.PolicyType</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Status</span>
+                    <strong>@Model.Status</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Policy Date</span>
+                    <strong>@Model.PolicyDate.ToString("dd MMM yyyy")</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Expiry Date</span>
+                    <strong>@Model.PolicyEndDate.ToString("dd MMM yyyy")</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Duration</span>
+                    <strong>@Model.PolicyDurationYears Year(s)</strong>
+                </div>
+
+            </div>
+
         </div>
     </div>
+
+    <!-- Customer Information -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Customer Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Customer Name</span>
+                    <strong>@Model.CustomerName</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Phone Number</span>
+                    <strong>@Model.CustomerPhone</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Address Proof</span>
+                    <strong>@Model.CustomerAddProve</strong>
+                </div>
+
+                <div>
+                    <span style="color:var(--text-muted); display:block; margin-bottom:8px;">
+                        Customer Address
+                    </span>
+
+                    <div style="
+                        padding:12px;
+                        border-radius:10px;
+                        background:rgba(255,255,255,.03);
+                        border:1px solid rgba(255,255,255,.05);">
+                        @Model.CustomerAddress
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Vehicle Information -->
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Insured Vehicle Details</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:20px;">
+
+            <div>
+
+                <p><strong>Vehicle Name:</strong> @Model.VehicleName</p>
+
+                <p><strong>Vehicle Model:</strong> @Model.VehicleModel</p>
+
+                <p><strong>Vehicle Version:</strong> @Model.VehicleVersion</p>
+
+                <p><strong>Vehicle Number:</strong> @Model.VehicleNumber</p>
+
+            </div>
+
+            <div>
+
+                <p><strong>Vehicle Rate:</strong> Rs. @Model.VehicleRate.ToString("N0")</p>
+
+                <p><strong>Warranty:</strong> @Model.VehicleWarranty</p>
+
+                <p><strong>Body Number:</strong> @Model.VehicleBodyNumber</p>
+
+                <p><strong>Engine Number:</strong> @Model.VehicleEngineNumber</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

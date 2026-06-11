@@ -1,0 +1,103 @@
+﻿@model IEnumerable<VehicleShield.Models.Estimate>
+
+@{
+    ViewData["Title"] = "Estimates";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Vehicle Estimates</h1>
+        <p>Manage all generated insurance estimates and valuation records</p>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Estimate Records</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Policy Type</th>
+                        <th>Vehicle Rate</th>
+                        <th>Date Created</th>
+                        <th style="width:280px;">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.EstimateId</td>
+
+                            <td style="font-weight:700; color:#fff;">
+                                @item.CustomerName
+                            </td>
+
+                            <td>
+                                @item.VehicleName
+                            </td>
+
+                            <td>
+                                @item.VehiclePolicyType
+                            </td>
+
+                            <td style="font-weight:600;">
+                                Rs. @item.VehicleRate.ToString("N0")
+                            </td>
+
+                            <td>
+                                @item.DateCreated.ToString("dd MMM yyyy")
+                            </td>
+
+                            <td>
+                                <div style="display:flex; gap:8px; align-items:center;">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.EstimateId"
+                                       class="btn btn-primary btn-sm">
+                                        Details
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.EstimateId"
+                                       class="btn btn-outline btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.EstimateId"
+                                       class="btn btn-outline btn-sm"
+                                       style="color:#ff6b6b; border-color:rgba(255,107,107,.25);">
+                                        Delete
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,146 @@
+﻿@model VehicleShield.Models.Estimate
+
+@{
+    ViewData["Title"] = "Estimate Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Estimate Details</h1>
+        <p>Complete estimate information and vehicle insurance overview</p>
+    </div>
+
+    <div class="page-header-actions">
+
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="content-grid cols-2" style="margin-bottom:20px;">
+
+    <!-- Customer Information -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Customer Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Customer Name</span>
+                    <strong>@Model.CustomerName</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Phone Number</span>
+                    <strong>@Model.CustomerPhone</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Customer ID</span>
+                    <strong>#@Model.CustomerId</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Created Date</span>
+                    <strong>@Model.DateCreated.ToString("dd MMM yyyy")</strong>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Estimate Summary -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Estimate Summary</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="background:rgba(255,255,255,.03);
+                        border:1px solid var(--card-border);
+                        border-radius:12px;
+                        padding:25px;
+                        text-align:center;">
+
+                <p style="color:var(--text-muted);">
+                    Estimated Vehicle Value
+                </p>
+
+                <h2 style="margin-top:10px;">
+                    Rs. @Model.VehicleRate.ToString("N0")
+                </h2>
+
+                <p style="margin-top:10px;">
+                    @Model.VehiclePolicyType Insurance
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Vehicle Information -->
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Vehicle Information</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="content-grid cols-2">
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Vehicle Name
+                    </span>
+                    <h5>@Model.VehicleName</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Vehicle Model
+                    </span>
+                    <h5>@Model.VehicleModel</h5>
+                </div>
+
+            </div>
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Warranty
+                    </span>
+                    <h5>@Model.VehicleWarranty</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Policy Type
+                    </span>
+                    <h5>@Model.VehiclePolicyType</h5>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

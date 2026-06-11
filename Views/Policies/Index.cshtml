@@ -1,30 +1,113 @@
 @model IEnumerable<VehicleShield.Models.Policy>
-@{ ViewData["Title"] = "Policies"; }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px; align-items:flex-start;">
-    <div class="auth-card" style="max-width: 1200px; width: 100%;">
+
+@{
+    ViewData["Title"] = "Policies";
+    Layout = "_AdminLayout";
+}
+
+<div class="auth-layout" style="min-height: calc(100vh - 80px); padding:40px 20px; align-items:flex-start;">
+
+    <div class="auth-card" style="max-width:1200px; width:100%;">
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Manage Policies</h2>
-            <a asp-action="Create" class="btn-auth" style="width: auto; padding: 10px 20px;">Create New</a>
+
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Policy
+            </a>
+            <br />
         </div>
+
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead style="background: linear-gradient(135deg, #6C63FF 0%, #3ECFCF 100%); color: white;">
-                    <tr><th>ID</th><th>Details</th><th>Actions</th></tr>
+
+            <table class="table table-hover text-white">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Policy Number</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Policy Type</th>
+                        <th>Status</th>
+                        <th>End Date</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
+
                 <tbody>
-                    @foreach (var item in Model) {
+
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <td>#</td>
-                            <td>@item.ToString()</td>
+                            <td>@item.PolicyId</td>
+
+                            <td>@item.PolicyNumber</td>
+
+                            <td>@item.CustomerName</td>
+
+                            <td>@item.VehicleName</td>
+
+                            <td>@item.PolicyType</td>
+
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-primary" style="margin-right:5px;">Edit</a>
-                                <a asp-action="Details" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-info" style="margin-right:5px;">Details</a>
-                                <a asp-action="Delete" asp-route-id="@item.GetType().GetProperty("PolicyId")?.GetValue(item)" class="btn btn-sm btn-danger">Delete</a>
+                                @if (item.Status == "Active")
+                                {
+                                    <span class="badge bg-success">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        @item.Status
+                                    </span>
+                                }
+                            </td>
+
+                            <td>
+                                @item.PolicyEndDate.ToString("dd MMM yyyy")
+                            </td>
+
+                            <td>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.PolicyId"
+                                   class="btn btn-sm btn-primary">
+                                    Edit
+                                </a>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.PolicyId"
+                                   class="btn btn-sm"
+                                   style="
+       background:rgba(62,207,207,.15);
+       color:#3ECFCF;
+       border:1px solid rgba(62,207,207,.3);
+       padding:8px 14px;
+       border-radius:8px;
+       text-decoration:none;
+       font-weight:600;">
+                                    Details
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.PolicyId"
+                                   class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+
                             </td>
                         </tr>
                     }
+
                 </tbody>
+
             </table>
+
         </div>
+
     </div>
+    
+
 </div>

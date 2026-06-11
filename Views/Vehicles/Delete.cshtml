@@ -1,15 +1,62 @@
 @model VehicleShield.Models.Vehicle
-@{ ViewData["Title"] = "Delete Vehicle"; }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 800px; width: 100%;">
-        <h2>Delete Vehicle</h2>
-        <h3 style="color:#ff6b6b; margin-bottom:20px;">Are you sure you want to delete this?</h3>
-        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl>
-            <form asp-action="Delete" method="post" style="margin-top:20px;">
-                <input type="hidden" asp-for="VehicleId" />
-                <button type="submit" class="btn-auth" style="background:#ff6b6b; width:150px; display:inline-flex; margin-right:10px;">Delete</button>
-                <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
-            </form>
+
+@{
+    ViewData["Title"] = "Delete Vehicle";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Delete Vehicle</h3>
         </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-danger">
+                Are you sure you want to delete this vehicle?
+            </div>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Vehicle Name</th>
+                    <td>@Model.VehicleName</td>
+                </tr>
+
+                <tr>
+                    <th>Owner Name</th>
+                    <td>@Model.OwnerName</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Model</th>
+                    <td>@Model.VehicleModel</td>
+                </tr>
+
+                <tr>
+                    <th>Vehicle Number</th>
+                    <td>@Model.VehicleNumber</td>
+                </tr>
+            </table>
+
+            <form asp-action="Delete">
+
+                <input type="hidden" asp-for="VehicleId" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Delete Vehicle
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
     </div>
 </div>

@@ -57,6 +57,21 @@ namespace VehicleShield.Controllers
         [Route("Admin/Policies/Create")]
         public async Task<IActionResult> Create(Policy policy)
         {
+            ModelState.Remove("PolicyNumber");
+            ModelState.Remove("PolicyEndDate");
+            ModelState.Remove("CustomerName");
+            ModelState.Remove("CustomerAddress");
+            ModelState.Remove("CustomerPhone");
+            ModelState.Remove("CustomerAddProve");
+            ModelState.Remove("VehicleNumber");
+            ModelState.Remove("VehicleName");
+            ModelState.Remove("VehicleModel");
+            ModelState.Remove("VehicleVersion");
+            ModelState.Remove("VehicleRate");
+            ModelState.Remove("VehicleWarranty");
+            ModelState.Remove("VehicleBodyNumber");
+            ModelState.Remove("VehicleEngineNumber");
+
             if (ModelState.IsValid)
             {
                 var customer = await _context.Customers.FindAsync(policy.CustomerId);
@@ -76,6 +91,9 @@ namespace VehicleShield.Controllers
                     policy.VehicleBodyNumber = vehicle.BodyNumber;
                     policy.VehicleEngineNumber = vehicle.EngineNumber;
                     policy.VehicleWarranty = policy.PolicyDurationYears >= 3 ? "3 Years" : "1 Year";
+
+                    policy.CustomerAddProve = "Address Verified";
+                    policy.Status = "Active";
                 }
 
                 policy.PolicyEndDate = policy.PolicyDate.AddYears(policy.PolicyDurationYears);
@@ -83,60 +101,15 @@ namespace VehicleShield.Controllers
                 var random = new Random();
                 policy.PolicyNumber = $"VS-{DateTime.Now.Year}-{random.Next(10000, 99999)}";
 
-                _context.Add(policy);
+                _context.Policies.Add(policy);
                 await _context.SaveChangesAsync();
 
-                // Auto-generate Bill
-                decimal annualRate = 0.05m;
-                if (policy.PolicyType == "Third Party") annualRate = 0.015m;
-                else if (policy.PolicyType == "Premium Elite") annualRate = 0.08m;
-
-                decimal billAmount = policy.VehicleRate * annualRate * policy.PolicyDurationYears;
-
-                var billing = new Billing
-                {
-                    CustomerId = policy.CustomerId,
-                    CustomerName = policy.CustomerName,
-                    PolicyId = policy.PolicyId,
-                    PolicyNumber = policy.PolicyNumber,
-                    CustomerAddProve = policy.CustomerAddProve,
-                    CustomerPhone = policy.CustomerPhone,
-                    BillNo = $"BILL-{random.Next(10000, 99999)}",
-                    VehicleName = policy.VehicleName,
-                    VehicleModel = policy.VehicleModel,
-                    VehicleRate = policy.VehicleRate,
-                    VehicleBodyNumber = policy.VehicleBodyNumber,
-                    VehicleEngineNumber = policy.VehicleEngineNumber,
-                    BillDate = DateTime.Now,
-                    Amount = billAmount,
-                    PaymentStatus = "Paid"
-                };
-
-                _context.Billings.Add(billing);
-                await _context.SaveChangesAsync();
-
-                // Save Estimate (Module 3.4 requirement)
-                var estimate = new Estimate
-                {
-                    CustomerId = policy.CustomerId,
-                    CustomerName = policy.CustomerName,
-                    CustomerPhone = policy.CustomerPhone,
-                    VehicleName = policy.VehicleName,
-                    VehicleModel = policy.VehicleModel,
-                    VehicleRate = policy.VehicleRate,
-                    VehicleWarranty = policy.VehicleWarranty,
-                    VehiclePolicyType = policy.PolicyType,
-                    DateCreated = DateTime.Now
-                };
-                _context.Estimates.Add(estimate);
-                await _context.SaveChangesAsync();
-
-                TempData["SuccessMessage"] = "Policy and Billing record created successfully.";
                 return RedirectToAction(nameof(Index));
             }
 
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName", policy.CustomerId);
             ViewBag.Vehicles = new SelectList(_context.Vehicles, "VehicleId", "VehicleNumber", policy.VehicleId);
+
             return View(policy);
         }
 
@@ -158,28 +131,73 @@ namespace VehicleShield.Controllers
         [Route("Admin/Policies/Edit/{id}")]
         public async Task<IActionResult> Edit(int id, Policy policy)
         {
-            if (id != policy.PolicyId) return NotFound();
+            if (id != policy.PolicyId)
+                return NotFound();
+
+
+// Remove validation for auto-filled fields
+ModelState.Remove("PolicyNumber");
+            ModelState.Remove("PolicyEndDate");
+            ModelState.Remove("CustomerName");
+            ModelState.Remove("CustomerAddress");
+            ModelState.Remove("CustomerPhone");
+            ModelState.Remove("CustomerAddProve");
+            ModelState.Remove("VehicleNumber");
+            ModelState.Remove("VehicleName");
+            ModelState.Remove("VehicleModel");
+            ModelState.Remove("VehicleVersion");
+            ModelState.Remove("VehicleRate");
+            ModelState.Remove("VehicleWarranty");
+            ModelState.Remove("VehicleBodyNumber");
+            ModelState.Remove("VehicleEngineNumber");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    policy.PolicyEndDate = policy.PolicyDate.AddYears(policy.PolicyDurationYears);
-                    _context.Update(policy);
+                    var existingPolicy = await _context.Policies
+                        .FirstOrDefaultAsync(p => p.PolicyId == id);
+
+                    if (existingPolicy == null)
+                        return NotFound();
+
+                    existingPolicy.PolicyDate = policy.PolicyDate;
+                    existingPolicy.PolicyDurationYears = policy.PolicyDurationYears;
+                    existingPolicy.PolicyType = policy.PolicyType;
+                    existingPolicy.Status = policy.Status;
+
+                    existingPolicy.PolicyEndDate =
+                        policy.PolicyDate.AddYears(policy.PolicyDurationYears);
+
+                    _context.Update(existingPolicy);
                     await _context.SaveChangesAsync();
+
                     TempData["SuccessMessage"] = "Policy updated successfully.";
+
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!PolicyExists(policy.PolicyId)) return NotFound();
-                    throw;
+                    ModelState.AddModelError("", ex.Message);
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName", policy.CustomerId);
-            ViewBag.Vehicles = new SelectList(_context.Vehicles, "VehicleId", "VehicleNumber", policy.VehicleId);
+
+            ViewBag.Customers = new SelectList(
+                _context.Customers,
+                "CustomerId",
+                "CustomerName",
+                policy.CustomerId);
+
+            ViewBag.Vehicles = new SelectList(
+                _context.Vehicles,
+                "VehicleId",
+                "VehicleNumber",
+                policy.VehicleId);
+
             return View(policy);
-        }
+
+}
+
 
         [Route("Admin/Policies/Delete/{id}")]
         public async Task<IActionResult> Delete(int? id)

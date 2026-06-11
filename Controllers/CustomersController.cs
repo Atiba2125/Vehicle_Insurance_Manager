@@ -119,15 +119,56 @@ namespace VehicleShield.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Route("Admin/Customers/Delete/{id}")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
+
             if (customer != null)
             {
+                // Customer ki vehicles
+                var vehicles = _context.Vehicles
+                    .Where(v => v.CustomerId == id)
+                    .ToList();
+
+                var vehicleIds = vehicles.Select(v => v.VehicleId).ToList();
+
+                // Un vehicles ki policies
+                var policies = _context.Policies
+                    .Where(p => vehicleIds.Contains(p.VehicleId))
+                    .ToList();
+
+                // Customer ki direct policies bhi
+                policies.AddRange(
+                    _context.Policies
+                    .Where(p => p.CustomerId == id)
+                    .ToList()
+                );
+
+                // Billings
+                var billings = _context.Billings
+                    .Where(b => b.CustomerId == id)
+                    .ToList();
+
+                // Claims
+                var policyIds = policies.Select(p => p.PolicyId).ToList();
+
+                var claims = _context.Claims
+                    .Where(c => policyIds.Contains(c.PolicyId))
+                    .ToList();
+
+                _context.Claims.RemoveRange(claims);
+                _context.Billings.RemoveRange(billings);
+                _context.Policies.RemoveRange(policies.Distinct());
+                _context.Vehicles.RemoveRange(vehicles);
+
                 _context.Customers.Remove(customer);
+
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Customer deleted successfully.";
             }
+
             return RedirectToAction(nameof(Index));
         }
 

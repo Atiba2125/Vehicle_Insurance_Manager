@@ -54,13 +54,15 @@ namespace VehicleShield.Controllers
             if (ModelState.IsValid)
             {
                 var customer = await _context.Customers.FindAsync(vehicle.CustomerId);
+
                 if (customer != null)
                 {
                     vehicle.OwnerName = customer.CustomerName;
                 }
+
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Vehicle record added successfully.";
+
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName", vehicle.CustomerId);

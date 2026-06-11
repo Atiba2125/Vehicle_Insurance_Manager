@@ -12,7 +12,7 @@ namespace VehicleShield.Models
         [StringLength(100)]
         public string VehicleName { get; set; } = string.Empty;
 
-        [Required]
+       
         [StringLength(100)]
         public string OwnerName { get; set; } = string.Empty;
 

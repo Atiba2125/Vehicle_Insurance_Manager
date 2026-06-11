@@ -1,12 +1,130 @@
 @model VehicleShield.Models.Vehicle
-@{ ViewData["Title"] = "Details Vehicle"; }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 800px; width: 100%;">
-        <h2>Vehicle Details</h2>
-        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl></div>
-        <div style="margin-top:20px;">
-            <a asp-action="Edit" asp-route-id="@Model?.GetType().GetProperty("VehicleId")?.GetValue(Model)" class="btn-auth" style="width:100px; display:inline-flex; margin-right:10px;">Edit</a>
-            <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
+@{
+    ViewData["Title"] = "Vehicle Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Vehicle Details</h1>
+        <p>Comprehensive dashboard of vehicle specifications, ownership, and registration information</p>
+    </div>
+
+    <div class="page-header-actions">
+        <a asp-action="Edit" asp-route-id="@Model.VehicleId" class="btn btn-primary">
+            Edit Vehicle
+        </a>
+
+        <a asp-action="Index" class="btn btn-outline">
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="content-grid cols-2" style="margin-bottom:20px;">
+
+    <!-- Vehicle Information -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Vehicle Information</h3>
         </div>
+
+        <div class="card-body">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                    <span style="color:var(--text-muted);">Vehicle Name</span>
+                    <span style="color:#fff; font-weight:600;">@Model.VehicleName</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                    <span style="color:var(--text-muted);">Owner Name</span>
+                    <span style="color:#fff; font-weight:600;">@Model.OwnerName</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                    <span style="color:var(--text-muted);">Vehicle Model</span>
+                    <span style="color:#fff;">@Model.VehicleModel</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                    <span style="color:var(--text-muted);">Vehicle Version</span>
+                    <span style="color:#fff;">@Model.VehicleVersion</span>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Vehicle Number</span>
+                    <span style="color:#fff;">@Model.VehicleNumber</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Value -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Vehicle Value</h3>
+        </div>
+
+        <div class="card-body">
+            <div style="
+                background: rgba(255,255,255,0.03);
+                border:1px solid var(--card-border);
+                border-radius:12px;
+                padding:30px;
+                text-align:center;">
+
+                <p style="color:var(--text-muted); margin-bottom:10px;">
+                    Current Market Value
+                </p>
+
+                <h1 style="
+                    color:var(--primary);
+                    font-size:2rem;
+                    margin-bottom:10px;
+                    font-weight:700;">
+                    Rs. @Model.VehicleRate.ToString("N0")
+                </h1>
+
+                <p style="color:#fff;">
+                    @Model.VehicleName @Model.VehicleModel
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Registration Details -->
+
+<div class="card">
+    <div class="card-header">
+        <h3>Registration Details</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div style="display:flex; flex-direction:column; gap:16px;">
+
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                <span style="color:var(--text-muted);">Body Number</span>
+                <span style="color:#fff;">@Model.BodyNumber</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px;">
+                <span style="color:var(--text-muted);">Engine Number</span>
+                <span style="color:#fff;">@Model.EngineNumber</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between;">
+                <span style="color:var(--text-muted);">Customer ID</span>
+                <span style="color:#fff;">@Model.CustomerId</span>
+            </div>
+
+        </div>
+
     </div>
 </div>
