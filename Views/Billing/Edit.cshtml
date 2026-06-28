@@ -1,16 +1,181 @@
 @model VehicleShield.Models.Billing
-@{ ViewData["Title"] = "Edit Billing"; 
+
+@{
+    ViewData["Title"] = "Billing Details";
     Layout = "_AdminLayout";
 }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 600px; width: 100%;">
-        <h2>Edit Billing</h2>
-        <form asp-action="Edit" method="post" class="auth-form">
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
-            <input type="hidden" asp-for="BillingId" />
-            <p class="text-muted">Edit form for Billing.</p>
-            <div class="form-group"><button type="submit" class="btn-auth">Save</button></div>
-        </form>
-        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Billing Details</h1>
+        <p>Complete billing record and payment information</p>
     </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.BillingId"
+           class="btn btn-primary">
+            Edit Billing
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back to List
+        </a>
+
+    </div>
+</div>
+
+<div class="content-grid cols-2" style="margin-bottom:20px;">
+
+    <!-- Billing Information -->
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Billing Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Bill Number</span>
+                    <strong>@Model.BillNo</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Policy Number</span>
+                    <strong>@Model.PolicyNumber</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Bill Date</span>
+                    <strong>@Model.BillDate.ToString("dd MMM yyyy")</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Amount</span>
+                    <strong>
+                        Rs. @Model.Amount.ToString("N0")
+                    </strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Payment Status</span>
+
+                    @if (Model.PaymentStatus == "Paid")
+                    {
+                        <span style="color:#4ade80; font-weight:700;">
+                            ? Paid
+                        </span>
+                    }
+                    else
+                    {
+                        <span style="color:#f87171; font-weight:700;">
+                            ? @Model.PaymentStatus
+                        </span>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Customer Information -->
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Customer Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Customer Name</span>
+                    <strong>@Model.CustomerName</strong>
+                </div>
+
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Phone Number</span>
+                    <strong>@Model.CustomerPhone</strong>
+                </div>
+
+                <div>
+                    <span style="color:var(--text-muted); display:block; margin-bottom:8px;">
+                        Address Proof
+                    </span>
+
+                    <div style="padding:12px; border-radius:10px; background:rgba(255,255,255,.03);">
+                        @Model.CustomerAddProve
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Vehicle Information -->
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Vehicle Information</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="content-grid cols-2">
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Vehicle Name</span>
+                    <h5>@Model.VehicleName</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Vehicle Model</span>
+                    <h5>@Model.VehicleModel</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Vehicle Rate</span>
+                    <h5>Rs. @Model.VehicleRate.ToString("N0")</h5>
+                </div>
+
+            </div>
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Body Number</span>
+                    <h5>@Model.VehicleBodyNumber</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Engine Number</span>
+                    <h5>@Model.VehicleEngineNumber</h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">Customer ID</span>
+                    <h5>@Model.CustomerId</h5>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

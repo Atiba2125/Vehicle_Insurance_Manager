@@ -30,18 +30,18 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Total Revenue (This Year)
         </p>
-        <div class="rb-value">₹@ViewBag.TotalEarnings.ToString("N0")</div>
+        <div class="rb-value">PKR @ViewBag.TotalEarnings.ToString("N0")</div>
         <p class="rb-sub">
-            Showroom expenses accumulated: <strong style="color:#ff6b6b;">₹@ViewBag.TotalExpenses.ToString("N0")</strong>
+            Showroom expenses accumulated: <strong style="color:#ff6b6b;">PKR @ViewBag.TotalExpenses.ToString("N0")</strong>
         </p>
     </div>
     <div class="rb-right">
         <div class="rb-mini">
-            <div class="rbm-val">₹@((ViewBag.TotalEarnings * 0.18m).ToString("N0"))</div>
+            <div class="rbm-val">PKR @((ViewBag.TotalEarnings * 0.18m).ToString("N0"))</div>
             <div class="rbm-lbl">Taxes (Est.)</div>
         </div>
         <div class="rb-mini">
-            <div class="rbm-val">₹@((ViewBag.TotalEarnings - ViewBag.TotalExpenses).ToString("N0"))</div>
+            <div class="rbm-val">PKR @((ViewBag.TotalEarnings - ViewBag.TotalExpenses).ToString("N0"))</div>
             <div class="rbm-lbl">Net income</div>
         </div>
     </div>
@@ -121,12 +121,12 @@
                                 <tr>
                                     <td>@claim.CustomerName</td>
                                     <td style="font-weight:700; color:#fff;">@claim.ClaimNumber</td>
-                                    <td style="font-weight:600; color:#fff;">₹@claim.ClaimableAmount.ToString("N0")</td>
+                                    <td style="font-weight:600; color:#fff;">PKR @claim.ClaimableAmount.ToString("N0")</td>
                                     <td>
                                         <span class="badge @(claim.Status == "Approved" ? "badge-active" : (claim.Status == "Pending" ? "badge-pending" : "badge-inactive"))">@claim.Status</span>
                                     </td>
                                     <td>
-                                        <a asp-controller="Claims" asp-action="Details" asp-route-id="@claim.ClaimId" class="btn btn-outline btn-sm">Process</a>
+                                        <a asp-controller="Claims" asp-action="Details" asp-route-id="@claim.ClaimId" class="btn btn-primary btn-sm">Process</a>
                                     </td>
                                 </tr>
                             }
@@ -166,7 +166,7 @@
                                 <tr>
                                     <td style="font-weight:700; color:#fff;">@bill.BillNo</td>
                                     <td>@bill.CustomerName</td>
-                                    <td style="font-weight:600; color:#fff;">₹@bill.Amount.ToString("N0")</td>
+                                    <td style="font-weight:600; color:#fff;">PKR @bill.Amount.ToString("N0")</td>
                                     <td>@bill.BillDate.ToString("MMM dd, yyyy")</td>
                                 </tr>
                             }
@@ -181,3 +181,62 @@
         </div>
     </div>
 </div>
+<style>
+
+    .revenue-banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        padding: 30px;
+        margin: 20px 0;
+        border-radius: 20px;
+        background: linear-gradient(135deg,#151932,#0e1430);
+        border: 1px solid rgba(108,99,255,.2);
+    }
+
+    .rb-label {
+        color: #9ca3af;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .rb-value {
+        font-size: 42px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .rb-sub {
+        color: #cbd5e1;
+        font-size: 15px;
+    }
+
+    .rb-right {
+        display: flex;
+        gap: 15px;
+    }
+
+    .rb-mini {
+        min-width: 180px;
+        padding: 20px;
+        border-radius: 15px;
+        background: rgba(255,255,255,.04);
+        text-align: center;
+    }
+
+    .rbm-val {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .rbm-lbl {
+        color: #94a3b8;
+        margin-top: 5px;
+    }
+</style>

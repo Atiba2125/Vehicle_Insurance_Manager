@@ -53,7 +53,7 @@
                                     <span class="badge @(policy.Status == "Active" ? "badge-active" : "badge-inactive")">@policy.Status</span>
                                 </td>
                                 <td>
-                                    <a asp-action="PolicyDetails" asp-route-id="@policy.PolicyId" class="btn btn-outline btn-sm">View Invoices</a>
+                                    <a asp-action="PolicyDetails" asp-route-id="@policy.PolicyId" class="btn btn-primary btn-sm">View Invoices</a>
                                 </td>
                             </tr>
                         }

@@ -1,14 +1,304 @@
 @model VehicleShield.Models.Claim
-@{ ViewData["Title"] = "Details Claim"; 
+
+@{
+    ViewData["Title"] = "Claim Details";
     Layout = "_AdminLayout";
 }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 800px; width: 100%;">
-        <h2>Claim Details</h2>
-        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl></div>
-        <div style="margin-top:20px;">
-            <a asp-action="Edit" asp-route-id="@Model?.GetType().GetProperty("ClaimId")?.GetValue(Model)" class="btn-auth" style="width:100px; display:inline-flex; margin-right:10px;">Edit</a>
-            <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Claim Details</h1>
+        <p>Claim #@Model.ClaimNumber ki mukammal maloomat</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="Index" class="btn btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Wapas Jayein
+        </a>
+    </div>
+</div>
+
+<!-- ===== STATUS BANNER ===== -->
+@if (Model.Status == "Approved")
+{
+    <div class="status-banner status-banner-approved">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Yeh claim <strong>Approved</strong> ho chuka hai</span>
+    </div>
+}
+else if (Model.Status == "Rejected")
+{
+    <div class="status-banner status-banner-rejected">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M15 9l-6 6M9 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Yeh claim <strong>Reject</strong> kar diya gaya hai</span>
+    </div>
+}
+else
+{
+    <div class="status-banner status-banner-pending">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Yeh claim <strong>Pending</strong> review mein hai</span>
+    </div>
+}
+
+<!-- ===== INFO GRID ===== -->
+<div class="content-grid cols-2" style="margin-bottom:20px;">
+
+    <!-- Claim Info -->
+    <div class="card">
+        <div class="card-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="color:var(--primary);">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M14 2v6h6M9 15l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3>Claim Information</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="detail-list">
+                <div class="detail-row">
+                    <span class="detail-label">Claim Number</span>
+                    <span class="detail-value highlight">@Model.ClaimNumber</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Policy Number</span>
+                    <span class="detail-value">@Model.PolicyNumber</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date Filed</span>
+                    <span class="detail-value">@Model.DateFiled.ToString("dd MMM yyyy")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Accident Date</span>
+                    <span class="detail-value">@Model.DateOfAccident.ToString("dd MMM yyyy")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Status</span>
+                    <span>
+                        @if (Model.Status == "Approved")
+                        {
+                            <span class="status-pill status-approved">
+                                <span class="status-dot" style="background:var(--success);"></span>Approved
+                            </span>
+                        }
+                        else if (Model.Status == "Rejected")
+                        {
+                            <span class="status-pill status-rejected">
+                                <span class="status-dot" style="background:var(--danger);"></span>Rejected
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-pill status-pending">
+                                <span class="status-dot" style="background:var(--warning);"></span>Pending
+                            </span>
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Info -->
+    <div class="card">
+        <div class="card-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="color:var(--primary);">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h3>Customer Information</h3>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="detail-list">
+                <div class="detail-row">
+                    <span class="detail-label">Customer Name</span>
+                    <span class="detail-value">@Model.CustomerName</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Policy ID</span>
+                    <span class="detail-value">@Model.PolicyId</span>
+                </div>
+                <div class="detail-row" style="align-items:flex-start;flex-direction:column;gap:8px;">
+                    <span class="detail-label">Jagah (Accident)</span>
+                    <div class="location-box">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="color:var(--primary);flex-shrink:0;">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        @Model.PlaceOfAccident
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== FINANCIAL INFO ===== -->
+<div class="card" style="margin-bottom:20px;">
+    <div class="card-header">
+        <div style="display:flex;align-items:center;gap:8px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="color:var(--primary);">
+                <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <h3>Financial Information</h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="fin-grid">
+
+            <div class="fin-card">
+                <span class="fin-label">Insured Amount</span>
+                <span class="fin-value">Rs. @Model.InsuredAmount.ToString("N0")</span>
+            </div>
+
+            <div class="fin-card fin-card-highlight">
+                <span class="fin-label">Claimable Amount</span>
+                <span class="fin-value fin-value-primary">Rs. @Model.ClaimableAmount.ToString("N0")</span>
+            </div>
+
+            <div class="fin-card">
+                <span class="fin-label">Policy Start</span>
+                <span class="fin-value" style="font-size:1rem;">@Model.PolicyStartDate.ToString("dd MMM yyyy")</span>
+            </div>
+
+            <div class="fin-card">
+                <span class="fin-label">Policy End</span>
+                <span class="fin-value" style="font-size:1rem;">@Model.PolicyEndDate.ToString("dd MMM yyyy")</span>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!-- ===== ACTIONS (Pending only) ===== -->
+@if (Model.Status == "Pending")
+{
+    <div class="card">
+        <div class="card-header">
+            <h3>Claim Action</h3>
+        </div>
+        <div class="card-body">
+            <p style="color:var(--text-muted);font-size:0.86rem;margin-bottom:20px;">
+                Is claim ko approve ya reject karen. Yeh action reversible nahi hoga.
+            </p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <form asp-action="Approve" asp-route-id="@Model.ClaimId" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-success-solid">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Approve Karen
+                    </button>
+                </form>
+                <form asp-action="Reject" asp-route-id="@Model.ClaimId" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger-solid">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        Reject Karen
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles {
+<style>
+    /* ── Status banner ── */
+    .status-banner {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 18px; border-radius: 12px;
+        font-size: 0.86rem; font-weight: 500;
+        margin-bottom: 24px;
+    }
+    .status-banner-approved { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: var(--success); }
+    .status-banner-rejected { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); color: var(--danger); }
+    .status-banner-pending  { background: rgba(255,179,0,0.1);  border: 1px solid rgba(255,179,0,0.25);  color: var(--warning); }
+
+    /* ── Detail list ── */
+    .detail-list { display: flex; flex-direction: column; gap: 0; }
+    .detail-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 13px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+    .detail-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .detail-value.highlight { color: var(--primary); font-family: monospace; font-size: 0.92rem; }
+
+    /* Status pills */
+    .status-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:50px; font-size:0.72rem; font-weight:700; }
+    .status-dot  { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+    .status-approved { background:rgba(16,185,129,.1); color:var(--success); border:1px solid rgba(16,185,129,.25); }
+    .status-pending  { background:rgba(255,179,0,.1);  color:var(--warning); border:1px solid rgba(255,179,0,.25); }
+    .status-rejected { background:rgba(255,107,107,.1);color:var(--danger);  border:1px solid rgba(255,107,107,.25);}
+
+    /* ── Location box ── */
+    .location-box {
+        display: flex; align-items: center; gap: 7px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--card-border);
+        border-radius: 10px; padding: 10px 14px;
+        font-size: 0.85rem; color: var(--text);
+        width: 100%;
+    }
+
+    /* ── Financial grid ── */
+    .fin-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .fin-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--card-border);
+        border-radius: 14px; padding: 18px 20px;
+        display: flex; flex-direction: column; gap: 6px;
+        transition: var(--transition);
+    }
+    .fin-card:hover { border-color: rgba(255,229,0,0.15); }
+    .fin-card-highlight { border-color: rgba(255,229,0,0.2); background: rgba(255,229,0,0.04); }
+    .fin-label { font-size: 0.74rem; color: var(--text-muted); font-weight: 500; }
+    .fin-value { font-size: 1.2rem; font-weight: 800; font-family: 'Outfit',sans-serif; color: var(--text); }
+    .fin-value-primary { color: var(--primary); }
+
+    /* ── Solid action buttons ── */
+    .btn-success-solid {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 11px 22px; border-radius: 10px; border: none;
+        background: rgba(16,185,129,0.15);
+        color: var(--success); font-size: 0.88rem; font-weight: 700;
+        cursor: pointer; border: 1px solid rgba(16,185,129,0.3);
+        transition: all 0.25s ease;
+    }
+    .btn-success-solid:hover { background: var(--success); color: #000; transform: translateY(-1px); }
+    .btn-danger-solid {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 11px 22px; border-radius: 10px; border: none;
+        background: rgba(255,107,107,0.12);
+        color: var(--danger); font-size: 0.88rem; font-weight: 700;
+        cursor: pointer; border: 1px solid rgba(255,107,107,0.3);
+        transition: all 0.25s ease;
+    }
+    .btn-danger-solid:hover { background: var(--danger); color: #fff; transform: translateY(-1px); }
+
+    @@media (max-width: 900px) { .fin-grid { grid-template-columns: repeat(2,1fr); } }
+    @@media (max-width: 500px) { .fin-grid { grid-template-columns: 1fr; } }
+</style>
+}

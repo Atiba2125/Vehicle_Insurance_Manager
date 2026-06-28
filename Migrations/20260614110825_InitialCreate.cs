@@ -54,6 +54,24 @@ namespace VehicleShield.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactMessages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Subject = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Expenses",
                 columns: table => new
                 {
@@ -197,33 +215,6 @@ namespace VehicleShield.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Estimates",
-                columns: table => new
-                {
-                    EstimateId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CustomerPhone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    VehicleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    VehicleModel = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    VehicleRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    VehicleWarranty = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    VehiclePolicyType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Estimates", x => x.EstimateId);
-                    table.ForeignKey(
-                        name: "FK_Estimates_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Vehicles",
                 columns: table => new
                 {
@@ -350,13 +341,53 @@ namespace VehicleShield.Migrations
                     InsuredAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ClaimableAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DateFiled = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateFiled = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Claims", x => x.ClaimId);
                     table.ForeignKey(
+                        name: "FK_Claims_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId");
+                    table.ForeignKey(
                         name: "FK_Claims_Policies_PolicyId",
+                        column: x => x.PolicyId,
+                        principalTable: "Policies",
+                        principalColumn: "PolicyId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Estimates",
+                columns: table => new
+                {
+                    EstimateId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    PolicyId = table.Column<int>(type: "int", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CustomerPhone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    VehicleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    VehicleModel = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    VehicleRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    VehicleWarranty = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    VehiclePolicyType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estimates", x => x.EstimateId);
+                    table.ForeignKey(
+                        name: "FK_Estimates_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Estimates_Policies_PolicyId",
                         column: x => x.PolicyId,
                         principalTable: "Policies",
                         principalColumn: "PolicyId",
@@ -413,6 +444,11 @@ namespace VehicleShield.Migrations
                 column: "PolicyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Claims_CustomerId",
+                table: "Claims",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Claims_PolicyId",
                 table: "Claims",
                 column: "PolicyId");
@@ -428,6 +464,11 @@ namespace VehicleShield.Migrations
                 name: "IX_Estimates_CustomerId",
                 table: "Estimates",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estimates_PolicyId",
+                table: "Estimates",
+                column: "PolicyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Policies_CustomerId",
@@ -468,6 +509,9 @@ namespace VehicleShield.Migrations
 
             migrationBuilder.DropTable(
                 name: "Claims");
+
+            migrationBuilder.DropTable(
+                name: "ContactMessages");
 
             migrationBuilder.DropTable(
                 name: "Estimates");

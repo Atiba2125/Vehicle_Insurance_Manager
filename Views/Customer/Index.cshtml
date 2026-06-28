@@ -97,7 +97,7 @@
                                 <span>Expires @policy.PolicyEndDate.ToString("MMM dd, yyyy")</span>
                             </div>
                             <div style="margin-top: 10px; text-align: right;">
-                                <a asp-action="PolicyDetails" asp-route-id="@policy.PolicyId" class="btn btn-outline btn-sm">View Invoices</a>
+                                <a asp-action="PolicyDetails" asp-route-id="@policy.PolicyId" class="btn btn-primary btn-sm">View Invoices</a>
                             </div>
                         </div>
                     }
@@ -147,7 +147,7 @@
                             <svg width="140" height="140" viewBox="0 0 140 140">
                                 <circle class="donut-bg" cx="70" cy="70" r="56" stroke-width="12"/>
                                 <circle class="donut-fill" id="donutFill" cx="70" cy="70" r="56" stroke-width="12" stroke="url(#dg1)" stroke-dasharray="376" stroke-dashoffset="@(latestClaim.Status == "Approved" ? "0" : (latestClaim.Status == "Pending" ? "188" : "376"))"/>
-                                <defs><linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#3ECFCF"/></linearGradient></defs>
+                                <defs><linearGradient id="dg1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFE500"/><stop offset="1" stop-color="#FF8500"/></linearGradient></defs>
                             </svg>
                             <div class="donut-center">
                                 <span class="donut-val">@(latestClaim.Status == "Approved" ? "100%" : (latestClaim.Status == "Pending" ? "50%" : "0%"))</span>

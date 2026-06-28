@@ -1,0 +1,177 @@
+@model IEnumerable<VehicleShield.Models.InsurancePlan>
+
+@{
+    ViewData["Title"] = "Insurance Plans";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+
+    <div class="page-header-left">
+        <h1>Insurance Plans</h1>
+        <p>
+            Manage all insurance plans available on the website
+        </p>
+    </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Add Insurance Plan
+        </a>
+
+    </div>
+ 
+
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Insurance Plan Records</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Plan Name</th>
+                        <th>Price</th>
+                        <th>Popular</th>
+                        <th>Status</th>
+                        <th style="width:280px;">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.InsurancePlanId
+                                </td>
+
+                                <td style="
+                                        font-weight:700;
+                                        color:#fff;">
+                                    @item.PlanName
+                                </td>
+
+                                <td style="
+                                        font-weight:600;
+                                        color:#4ade80;">
+                                    Rs. @item.Price.ToString("N0")
+                                </td>
+
+                                <td>
+
+                                    @if (item.IsPopular)
+                                    {
+                                        <span style="
+                                                    color:#facc15;
+                                                    font-weight:700;">
+                                            Yes
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="
+                                                    color:#9ca3af;">
+                                            No
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @if (item.IsActive)
+                                    {
+                                        <span style="
+                                                    color:#4ade80;
+                                                    font-weight:700;">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="
+                                                    color:#ff6b6b;
+                                                    font-weight:700;">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    <div style="
+                                            display:flex;
+                                            gap:8px;
+                                            align-items:center;">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.InsurancePlanId"
+                                           class="btn btn-primary btn-sm">
+                                            Details
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.InsurancePlanId"
+                                           class="btn btn-outline btn-sm">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.InsurancePlanId"
+                                           class="btn btn-danger btn-sm">
+                                            Delete
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                style="
+                                text-align:center;
+                                padding:40px;
+                                color:#9ca3af;">
+
+                                No insurance plans found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>

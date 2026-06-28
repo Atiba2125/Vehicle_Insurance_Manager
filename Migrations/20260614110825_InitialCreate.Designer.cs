@@ -12,8 +12,8 @@ using VehicleShield.Data;
 namespace VehicleShield.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260608173339_AddClaimsToCustomer")]
-    partial class AddClaimsToCustomer
+    [Migration("20260614110825_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -382,6 +382,46 @@ namespace VehicleShield.Migrations
                     b.ToTable("Claims");
                 });
 
+            modelBuilder.Entity("VehicleShield.Models.ContactMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactMessages");
+                });
+
             modelBuilder.Entity("VehicleShield.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -441,6 +481,9 @@ namespace VehicleShield.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PolicyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("VehicleModel")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -467,6 +510,8 @@ namespace VehicleShield.Migrations
                     b.HasKey("EstimateId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("PolicyId");
 
                     b.ToTable("Estimates");
                 });
@@ -759,7 +804,15 @@ namespace VehicleShield.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VehicleShield.Models.Policy", "Policy")
+                        .WithMany("Estimates")
+                        .HasForeignKey("PolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Policy");
                 });
 
             modelBuilder.Entity("VehicleShield.Models.Policy", b =>
@@ -815,6 +868,8 @@ namespace VehicleShield.Migrations
                     b.Navigation("Billings");
 
                     b.Navigation("Claims");
+
+                    b.Navigation("Estimates");
                 });
 
             modelBuilder.Entity("VehicleShield.Models.Vehicle", b =>

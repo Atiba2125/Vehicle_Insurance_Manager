@@ -49,15 +49,15 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
+      entry.target.style.transform = 'translateY(0) scale(1)';
     }
   });
 }, observerOptions);
 
 document.querySelectorAll('.plan-card, .step-card, .testimonial-card, .feature-item, .contact-item').forEach(el => {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(30px)';
-  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  el.style.transform = 'translateY(40px) scale(0.97)';
+  el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
   observer.observe(el);
 });
 
@@ -113,7 +113,7 @@ function createParticle() {
     position: absolute;
     width: ${Math.random() * 4 + 1}px;
     height: ${Math.random() * 4 + 1}px;
-    background: rgba(108,99,255,${Math.random() * 0.4 + 0.1});
+    background: rgba(255,229,0,${Math.random() * 0.4 + 0.1});
     border-radius: 50%;
     left: ${Math.random() * 100}%;
     top: ${Math.random() * 100}%;

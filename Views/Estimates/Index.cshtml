@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VehicleShield.Models.Estimate>
+@model IEnumerable<VehicleShield.Models.Estimate>
 
 @{
     ViewData["Title"] = "Estimates";
@@ -81,8 +81,7 @@
 
                                     <a asp-action="Delete"
                                        asp-route-id="@item.EstimateId"
-                                       class="btn btn-outline btn-sm"
-                                       style="color:#ff6b6b; border-color:rgba(255,107,107,.25);">
+                                       class="btn btn-danger btn-sm">
                                         Delete
                                     </a>
 

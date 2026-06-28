@@ -1,0 +1,241 @@
+﻿@model VehicleShield.Models.InsurancePlan
+
+@{
+    ViewData["Title"] = "Insurance Plan Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+
+    <div class="page-header-left">
+        <h1>Insurance Plan Details</h1>
+        <p>
+            Complete insurance plan information
+        </p>
+    </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.InsurancePlanId"
+           class="btn btn-primary">
+            Edit Plan
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back To List
+        </a>
+
+    </div>
+  
+
+</div>
+
+<div class="content-grid cols-2">
+
+    <!-- Plan Information -->
+
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Plan Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-muted);">
+                        Plan ID
+                    </span>
+
+                    <strong>
+                        @Model.InsurancePlanId
+                    </strong>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-muted);">
+                        Plan Name
+                    </span>
+
+                    <strong>
+                        @Model.PlanName
+                    </strong>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-muted);">
+                        Price
+                    </span>
+
+                    <strong style="color:#4ade80;">
+                        Rs. @Model.Price.ToString("N0")
+                    </strong>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-muted);">
+                        Popular Plan
+                    </span>
+
+                    @if (Model.IsPopular)
+                    {
+                        <span style="color:#facc15;font-weight:700;">
+                            Yes
+                        </span>
+                    }
+                    else
+                    {
+                        <span style="color:#9ca3af;">
+                            No
+                        </span>
+                    }
+
+                </div>
+
+                <div style="display:flex;justify-content:space-between;">
+                    <span style="color:var(--text-muted);">
+                        Status
+                    </span>
+
+                    @if (Model.IsActive)
+                    {
+                        <span style="color:#4ade80;font-weight:700;">
+                            Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span style="color:#ff6b6b;font-weight:700;">
+                            Inactive
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Plan Description -->
+
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Description</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="
+            padding:15px;
+            border-radius:12px;
+            background:rgba(255,255,255,.03);">
+
+                @Model.Description
+
+            </div>
+
+        </div>
+
+    </div>
+  
+
+</div>
+
+<!-- Features -->
+
+<div class="card" style="margin-top:20px;">
+   
+    <div class="card-header">
+        <h3>Plan Features</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div style="
+        padding:18px;
+        border-radius:12px;
+        background:rgba(255,255,255,.03);
+        line-height:1.8;">
+
+            @Model.Features
+
+        </div>
+
+    </div>
+  
+
+</div>
+
+<!-- Summary -->
+
+<div class="card" style="margin-top:20px;">
+
+    <div class="card-header">
+        <h3>Plan Summary</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="content-grid cols-2">
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Plan Name
+                    </span>
+
+                    <h5>
+                        @Model.PlanName
+                    </h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Website Visibility
+                    </span>
+
+                    <h5>
+                        @(Model.IsActive ? "Visible On Website" : "Hidden")
+                    </h5>
+                </div>
+
+            </div>
+
+            <div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Plan Price
+                    </span>
+
+                    <h5 style="color:#4ade80;">
+                        Rs. @Model.Price.ToString("N0")
+                    </h5>
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <span style="color:var(--text-muted);">
+                        Popular Badge
+                    </span>
+
+                    <h5>
+                        @(Model.IsPopular ? "Featured Plan" : "Standard Plan")
+                    </h5>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  
+
+</div>

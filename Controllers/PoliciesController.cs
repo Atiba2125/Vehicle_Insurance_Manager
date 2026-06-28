@@ -90,25 +90,106 @@ namespace VehicleShield.Controllers
                     policy.VehicleRate = vehicle.VehicleRate;
                     policy.VehicleBodyNumber = vehicle.BodyNumber;
                     policy.VehicleEngineNumber = vehicle.EngineNumber;
-                    policy.VehicleWarranty = policy.PolicyDurationYears >= 3 ? "3 Years" : "1 Year";
+
+                    policy.VehicleWarranty =
+                        policy.PolicyDurationYears >= 3 ? "3 Years" : "1 Year";
 
                     policy.CustomerAddProve = "Address Verified";
                     policy.Status = "Active";
                 }
 
-                policy.PolicyEndDate = policy.PolicyDate.AddYears(policy.PolicyDurationYears);
+                policy.PolicyEndDate =
+                    policy.PolicyDate.AddYears(policy.PolicyDurationYears);
 
                 var random = new Random();
-                policy.PolicyNumber = $"VS-{DateTime.Now.Year}-{random.Next(10000, 99999)}";
 
+                policy.PolicyNumber =
+                    $"VS-{DateTime.Now.Year}-{random.Next(10000, 99999)}";
+
+                // ==========================
+                // Save Policy
+                // ==========================
                 _context.Policies.Add(policy);
                 await _context.SaveChangesAsync();
+
+                // ==========================
+                // Auto Generate Billing
+                // ==========================
+
+                decimal annualRate = 0.05m;
+
+                if (policy.PolicyType == "Third Party")
+                    annualRate = 0.015m;
+                else if (policy.PolicyType == "Premium Elite")
+                    annualRate = 0.08m;
+
+                decimal billAmount =
+                    policy.VehicleRate * annualRate * policy.PolicyDurationYears;
+
+                var billing = new Billing
+                {
+                    CustomerId = policy.CustomerId,
+                    CustomerName = policy.CustomerName,
+                    PolicyId = policy.PolicyId,
+                    PolicyNumber = policy.PolicyNumber,
+                    CustomerAddProve = policy.CustomerAddProve,
+                    CustomerPhone = policy.CustomerPhone,
+                    BillNo = $"BILL-{random.Next(10000, 99999)}",
+                    VehicleName = policy.VehicleName,
+                    VehicleModel = policy.VehicleModel,
+                    VehicleRate = policy.VehicleRate,
+                    VehicleBodyNumber = policy.VehicleBodyNumber,
+                    VehicleEngineNumber = policy.VehicleEngineNumber,
+                    BillDate = DateTime.Now,
+                    Amount = billAmount,
+                    PaymentStatus = "Paid"
+                };
+
+                _context.Billings.Add(billing);
+                await _context.SaveChangesAsync();
+
+                // ==========================
+                // Auto Generate Estimate
+                // ==========================
+
+                var estimate = new Estimate
+                {
+                    CustomerId = policy.CustomerId,
+                    PolicyId = policy.PolicyId, // IMPORTANT FIX
+
+                    CustomerName = policy.CustomerName,
+                    CustomerPhone = policy.CustomerPhone,
+
+                    VehicleName = policy.VehicleName,
+                    VehicleModel = policy.VehicleModel,
+                    VehicleRate = policy.VehicleRate,
+
+                    VehicleWarranty = policy.VehicleWarranty,
+                    VehiclePolicyType = policy.PolicyType,
+
+                    DateCreated = DateTime.Now
+                };
+
+                _context.Estimates.Add(estimate);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessMessage"] =
+                    "Policy, Billing and Estimate created successfully.";
 
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Customers = new SelectList(_context.Customers, "CustomerId", "CustomerName", policy.CustomerId);
-            ViewBag.Vehicles = new SelectList(_context.Vehicles, "VehicleId", "VehicleNumber", policy.VehicleId);
+            ViewBag.Customers =
+                new SelectList(_context.Customers,
+                "CustomerId",
+                "CustomerName",
+                policy.CustomerId);
+
+            ViewBag.Vehicles =
+                new SelectList(_context.Vehicles,
+                "VehicleId",
+                "VehicleNumber",
+                policy.VehicleId);
 
             return View(policy);
         }

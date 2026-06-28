@@ -48,10 +48,14 @@ namespace VehicleShield.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal ClaimableAmount { get; set; }
 
+       
+
         [Required]
         [StringLength(50)]
         public string Status { get; set; } = "Pending"; // "Pending", "Approved", "Rejected"
 
         public DateTime DateFiled { get; set; } = DateTime.Now;
+
+
     }
 }

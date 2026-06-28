@@ -20,6 +20,8 @@ namespace VehicleShield.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
 
+        public DbSet<InsurancePlan> InsurancePlans { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -74,6 +76,13 @@ namespace VehicleShield.Data
                 .HasMany(p => p.Claims)
                 .WithOne(c => c.Policy)
                 .HasForeignKey(c => c.PolicyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // NEW RELATIONSHIP FOR ESTIMATES
+            builder.Entity<Policy>()
+                .HasMany(p => p.Estimates)
+                .WithOne(e => e.Policy)
+                .HasForeignKey(e => e.PolicyId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

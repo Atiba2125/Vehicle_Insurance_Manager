@@ -23,9 +23,14 @@ namespace VehicleShield.Controllers
             ViewBag.TotalPolicies = await _context.Policies.CountAsync();
             ViewBag.ActivePoliciesCount = await _context.Policies.CountAsync(p => p.Status == "Active");
             ViewBag.PendingClaimsCount = await _context.Claims.CountAsync(c => c.Status == "Pending");
-            ViewBag.TotalEarnings = await _context.Billings.Where(b => b.PaymentStatus == "Paid").SumAsync(b => b.Amount);
-            ViewBag.TotalExpenses = await _context.Expenses.SumAsync(e => e.AmountOfExpense);
+            ViewBag.TotalEarnings = await _context.Billings
+     .Where(b => b.PaymentStatus == "Paid")
+     .Select(b => (decimal?)b.Amount)
+     .SumAsync() ?? 0;
 
+            ViewBag.TotalExpenses = await _context.Expenses
+                .Select(e => (decimal?)e.AmountOfExpense)
+                .SumAsync() ?? 0;
             // Recent Claims
             var recentClaims = await _context.Claims
                 .OrderByDescending(c => c.DateFiled)

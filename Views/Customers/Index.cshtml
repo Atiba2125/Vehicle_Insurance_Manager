@@ -43,9 +43,9 @@
                             <td>@item.CustomerPhone</td>
                             <td>
                                 <div style="display: flex; gap: 8px;">
-                                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm">Details</a>
+                                    <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-primary btn-sm">Details</a>
                                     <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-outline btn-sm" style="color: var(--danger); border-color: rgba(255,107,107,0.2);">Delete</a>
+                                    <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-danger btn-sm">Delete</a>
                                 </div>
                             </td>
                         </tr>

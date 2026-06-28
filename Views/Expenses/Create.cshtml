@@ -1,15 +1,150 @@
 @model VehicleShield.Models.Expense
-@{ ViewData["Title"] = "Create Expense"; 
+
+@{
+    ViewData["Title"] = "Create Expense";
     Layout = "_AdminLayout";
 }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 600px; width: 100%;">
-        <h2>Create Expense</h2>
-        <form asp-action="Create" method="post" class="auth-form">
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
-            <p class="text-muted">Form generated for Expense. Update properties manually.</p>
-            <div class="form-group"><button type="submit" class="btn-auth">Create</button></div>
+
+<div style="padding:30px; max-width:900px;">
+
+   
+    <h1 style="font-size:48px;font-weight:700;margin-bottom:10px;">
+        Create Expense
+    </h1>
+
+    <p style="color:#9ca3af;font-size:18px;margin-bottom:30px;">
+        Add a new business expense record
+    </p>
+
+    <div style="
+    background:#0f172a;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:30px;
+">
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"
+                 style="margin-bottom:20px;">
+            </div>
+
+            <div style="margin-bottom:25px;">
+
+                <label style="
+                display:block;
+                margin-bottom:10px;
+                font-size:18px;
+                font-weight:600;">
+                    Date Of Expense
+                </label>
+
+                <input asp-for="DateOfExpense"
+                       type="date"
+                       style="
+                   width:100%;
+                   padding:14px;
+                   border-radius:12px;
+                   border:1px solid #334155;
+                   background:#1e293b;
+                   color:white;" />
+
+            </div>
+
+            <div style="margin-bottom:25px;">
+
+                <label style="
+                display:block;
+                margin-bottom:10px;
+                font-size:18px;
+                font-weight:600;">
+                    Expense Type
+                </label>
+
+                <select asp-for="TypeOfExpense"
+                        style="
+                    width:100%;
+                    padding:14px;
+                    border-radius:12px;
+                    border:1px solid #334155;
+                    background:#1e293b;
+                    color:white;">
+
+                    <option value="">Select Expense Type</option>
+                    <option>Office Rent</option>
+                    <option>Electricity Bill</option>
+                    <option>Internet Bill</option>
+                    <option>Staff Salary</option>
+                    <option>Vehicle Maintenance</option>
+                    <option>Insurance Processing</option>
+                    <option>Marketing</option>
+                    <option>Miscellaneous</option>
+
+                </select>
+
+            </div>
+
+            <div style="margin-bottom:30px;">
+
+                <label style="
+                display:block;
+                margin-bottom:10px;
+                font-size:18px;
+                font-weight:600;">
+                    Amount Of Expense
+                </label>
+
+                <input asp-for="AmountOfExpense"
+                       placeholder="Enter Amount"
+                       style="
+                   width:100%;
+                   padding:14px;
+                   border-radius:12px;
+                   border:1px solid #334155;
+                   background:#1e293b;
+                   color:white;" />
+
+            </div>
+
+            <div style="display:flex;gap:15px;">
+
+                <button type="submit"
+                        style="
+                    border:none;
+                    padding:14px 30px;
+                    border-radius:12px;
+                    color:white;
+                    font-weight:600;
+                    background:linear-gradient(135deg,#6366f1,#06b6d4);">
+
+                    Save Expense
+
+                </button>
+
+                <a asp-action="Index"
+                   style="
+               text-decoration:none;
+               padding:14px 30px;
+               border-radius:12px;
+               background:#374151;
+               color:white;">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
         </form>
-        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+
     </div>
+   
+
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

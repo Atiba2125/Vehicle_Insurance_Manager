@@ -1,16 +1,140 @@
 @model VehicleShield.Models.Expense
-@{ ViewData["Title"] = "Edit Expense";
+
+@{
+    ViewData["Title"] = "Edit Expense";
     Layout = "_AdminLayout";
- }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 600px; width: 100%;">
-        <h2>Edit Expense</h2>
-        <form asp-action="Edit" method="post" class="auth-form">
-            <div asp-validation-summary="ModelOnly" class="text-danger" style="color:#ff6b6b; margin-bottom:15px;"></div>
-            <input type="hidden" asp-for="ExpenseId" />
-            <p class="text-muted">Edit form for Expense.</p>
-            <div class="form-group"><button type="submit" class="btn-auth">Save</button></div>
-        </form>
-        <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
+}
+
+<div class="page-header">
+
+ 
+    <div class="page-header-left">
+        <h1>Edit Expense</h1>
+        <p>Update and manage expense information</p>
     </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.ExpenseId"
+           class="btn btn-outline">
+            View Details
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back To List
+        </a>
+
+    </div>
+    
+
 </div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Expense Information</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Edit">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <input type="hidden" asp-for="ExpenseId" />
+
+            <div class="content-grid cols-2">
+
+                <div class="form-group">
+
+                    <label asp-for="DateOfExpense">
+                        Date Of Expense
+                    </label>
+
+                    <input asp-for="DateOfExpense"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="DateOfExpense"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="TypeOfExpense">
+                        Expense Type
+                    </label>
+
+                    <select asp-for="TypeOfExpense"
+                            class="form-control">
+
+                        <option value="Office Rent">Office Rent</option>
+                        <option value="Electricity Bill">Electricity Bill</option>
+                        <option value="Internet Bill">Internet Bill</option>
+                        <option value="Staff Salary">Staff Salary</option>
+                        <option value="Vehicle Maintenance">Vehicle Maintenance</option>
+                        <option value="Insurance Processing">Insurance Processing</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+
+                    </select>
+
+                    <span asp-validation-for="TypeOfExpense"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="AmountOfExpense">
+                        Amount Of Expense
+                    </label>
+
+                    <input asp-for="AmountOfExpense"
+                           class="form-control" />
+
+                    <span asp-validation-for="AmountOfExpense"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div style="margin-top:25px; display:flex; gap:10px;">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Save Changes
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+ 
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

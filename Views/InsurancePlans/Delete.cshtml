@@ -1,7 +1,7 @@
-@model VehicleShield.Models.Expense
+﻿@model VehicleShield.Models.InsurancePlan
 
 @{
-    ViewData["Title"] = "Delete Expense";
+    ViewData["Title"] = "Delete Insurance Plan";
     Layout = "_AdminLayout";
 }
 
@@ -9,8 +9,10 @@
 
 
     <div class="page-header-left">
-        <h1>Delete Expense</h1>
-        <p>Confirm expense record deletion</p>
+        <h1>Delete Insurance Plan</h1>
+        <p>
+            Confirm insurance plan deletion
+        </p>
     </div>
 
     <div class="page-header-actions">
@@ -46,7 +48,7 @@
                 Warning:
             </strong>
 
-            This action will permanently delete this expense record.
+            This insurance plan will be permanently deleted.
             This action cannot be undone.
 
         </div>
@@ -58,11 +60,11 @@
                 <div style="margin-bottom:18px;">
 
                     <span style="color:var(--text-muted);">
-                        Expense ID
+                        Plan ID
                     </span>
 
                     <h5>
-                        #@Model.ExpenseId
+                        @Model.InsurancePlanId
                     </h5>
 
                 </div>
@@ -70,11 +72,23 @@
                 <div style="margin-bottom:18px;">
 
                     <span style="color:var(--text-muted);">
-                        Expense Type
+                        Plan Name
                     </span>
 
                     <h5>
-                        @Model.TypeOfExpense
+                        @Model.PlanName
+                    </h5>
+
+                </div>
+
+                <div style="margin-bottom:18px;">
+
+                    <span style="color:var(--text-muted);">
+                        Price
+                    </span>
+
+                    <h5 style="color:#4ade80;">
+                        Rs. @Model.Price.ToString("N0")
                     </h5>
 
                 </div>
@@ -86,11 +100,11 @@
                 <div style="margin-bottom:18px;">
 
                     <span style="color:var(--text-muted);">
-                        Date Of Expense
+                        Popular Plan
                     </span>
 
                     <h5>
-                        @Model.DateOfExpense.ToString("dd MMM yyyy")
+                        @(Model.IsPopular ? "Yes" : "No")
                     </h5>
 
                 </div>
@@ -98,12 +112,21 @@
                 <div style="margin-bottom:18px;">
 
                     <span style="color:var(--text-muted);">
-                        Amount
+                        Status
                     </span>
 
-                    <h5 style="color:#4ade80;">
-                        Rs. @Model.AmountOfExpense.ToString("N0")
-                    </h5>
+                    @if (Model.IsActive)
+                    {
+                        <h5 style="color:#4ade80;">
+                            Active
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5 style="color:#ff6b6b;">
+                            Inactive
+                        </h5>
+                    }
 
                 </div>
 
@@ -112,13 +135,13 @@
         </div>
 
         <hr />
-        <br />
 
+        <br />
         <form asp-action="Delete"
               method="post">
 
             <input type="hidden"
-                   asp-for="ExpenseId" />
+                   asp-for="InsurancePlanId" />
 
             <div style="
             display:flex;
@@ -128,12 +151,12 @@
                 <button type="submit"
                         class="btn btn-danger">
 
-                    Delete Expense
+                    Delete Plan
 
                 </button>
 
                 <a asp-action="Details"
-                   asp-route-id="@Model.ExpenseId"
+                   asp-route-id="@Model.InsurancePlanId"
                    class="btn btn-outline">
 
                     Cancel
@@ -144,6 +167,6 @@
 
         </form>
 
-    </div>
+ 
 
 </div>

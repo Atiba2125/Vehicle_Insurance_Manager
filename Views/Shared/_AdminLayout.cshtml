@@ -20,8 +20,8 @@
                         <path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                         <defs>
                             <linearGradient id="asl" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#6C63FF" />
-                                <stop offset="1" stop-color="#3ECFCF" />
+                                <stop stop-color="#FFD600" />
+                                <stop offset="1" stop-color="#FFAB00" />
                             </linearGradient>
                         </defs>
                     </svg>
@@ -30,7 +30,7 @@
             </a>
 
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:linear-gradient(135deg,#F7C948,#FF6B6B)">AD</div>
+                <div class="user-avatar" style="background:linear-gradient(135deg,#FFD600,#FFAB00)">AD</div>
                 <div>
                     <p class="user-name">@User.Identity?.Name</p>
                     <p class="user-role">Administrator</p>
@@ -76,6 +76,28 @@
                     Claims
                 </a>
 
+                <a asp-controller="InsurancePlans"
+                   asp-action="Index"
+                   class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "InsurancePlans" ? "active" : "")">
+
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L4 6V12C4 17 7.5 21.5 12 22C16.5 21.5 20 17 20 12V6L12 2Z"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round" />
+                        <path d="M9 12L11 14L15 10"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round" />
+                    </svg>
+
+                    Insurance Plans
+
+                </a>
+                   
+
                 <span class="nav-section-label">Analytics</span>
                 <a asp-controller="Reports" asp-action="Index" class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
@@ -112,7 +134,7 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
                     </button>
                     <div class="topbar-btn" style="width:auto;padding:0 10px;gap:6px;font-size:0.8rem;font-weight:600;color:var(--text);">
-                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#F7C948,#FF6B6B);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff">AD</div>
+                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#FFD600,#FFAB00);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#000">AD</div>
                         Admin
                     </div>
                 </div>
@@ -123,13 +145,85 @@
 
                 <!-- Footer -->
                 <footer class="dashboard-footer">
-                    <div class="footer-left">
-                        © 2026 VehicleShield Insurance. All rights reserved.
+                    <div class="footer-top-bar"></div>
+
+                    <div class="footer-body">
+                        <!-- Brand Column -->
+                        <div class="footer-brand">
+                            <div class="footer-brand-logo">
+                                <svg viewBox="0 0 40 40" fill="none" width="28" height="28">
+                                    <path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" fill="url(#fsl)" />
+                                    <path d="M14 22L18 26L26 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <defs>
+                                        <linearGradient id="fsl" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#FFD600" />
+                                            <stop offset="1" stop-color="#FFAB00" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <span class="footer-brand-name">VehicleShield</span>
+                            </div>
+                            <p class="footer-tagline">Pakistan's trusted vehicle insurance management platform. Protecting every journey.</p>
+                            <div class="footer-status-badge">
+                                <span class="status-pulse-dot"></span>
+                                <span>All Systems Operational</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="footer-col">
+                            <h4 class="footer-col-title">Management</h4>
+                            <ul class="footer-links-list">
+                                <li><a asp-controller="Customers" asp-action="Index" class="footer-nav-link">Customers</a></li>
+                                <li><a asp-controller="Vehicles" asp-action="Index" class="footer-nav-link">Vehicles</a></li>
+                                <li><a asp-controller="Policies" asp-action="Index" class="footer-nav-link">Policies</a></li>
+                                <li><a asp-controller="Estimates" asp-action="Index" class="footer-nav-link">Estimates</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4 class="footer-col-title">Finance & Reports</h4>
+                            <ul class="footer-links-list">
+                                <li><a asp-controller="Billing" asp-action="Index" class="footer-nav-link">Billing</a></li>
+                                <li><a asp-controller="Expenses" asp-action="Index" class="footer-nav-link">Expenses</a></li>
+                                <li><a asp-controller="Claims" asp-action="Index" class="footer-nav-link">Claims</a></li>
+                                <li><a asp-controller="Reports" asp-action="Index" class="footer-nav-link">Reports</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- System Info -->
+                        <div class="footer-col footer-col-system">
+                            <h4 class="footer-col-title">System Info</h4>
+                            <div class="footer-sys-info">
+                                <div class="footer-sys-row">
+                                    <span class="sys-label">Version</span>
+                                    <span class="version-tag">v2.4.0-prod</span>
+                                </div>
+                                <div class="footer-sys-row">
+                                    <span class="sys-label">Environment</span>
+                                    <span class="env-tag">Production</span>
+                                </div>
+                                <div class="footer-sys-row">
+                                    <span class="sys-label">Uptime</span>
+                                    <span class="uptime-tag">99.9%</span>
+                                </div>
+                                <div class="footer-sys-row">
+                                    <span class="sys-label">Last Backup</span>
+                                    <span class="backup-tag">Today, 03:00 AM</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="footer-right">
-                        <div class="system-status">
-                            <span class="status-dot"></span>
-                            System Online
+
+                    <!-- Copyright Row -->
+                    <div class="footer-bottom">
+                        <span class="footer-copy">&copy; 2026 <strong>VehicleShield</strong>. Jami huqooq mahfooz hain.</span>
+                        <div class="footer-bottom-links">
+                            <a href="#" class="footer-link">Privacy Policy</a>
+                            <span class="footer-dot">·</span>
+                            <a href="#" class="footer-link">Terms of Service</a>
+                            <span class="footer-dot">·</span>
+                            <a href="#" class="footer-link">Support</a>
                         </div>
                     </div>
                 </footer>

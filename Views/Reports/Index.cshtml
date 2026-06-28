@@ -1,17 +1,279 @@
+@model VehicleShield.Controllers.ReportsViewModel
 
-@{ ViewData["Title"] = "Reports";
+@{
+    ViewData["Title"] = "Reports";
     Layout = "_AdminLayout";
- }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px; align-items:flex-start;">
-    <div class="auth-card" style="max-width: 1200px; width: 100%;">
-        <h2>Management Reports</h2>
-        <p>This section provides analytical reports and insights into system operations.</p>
-        <div class="d-flex" style="gap:20px; flex-wrap:wrap; margin-top:30px;">
-            <a asp-action="MonthlySales" class="btn-auth" style="width:200px;">Monthly Sales</a>
-            <a asp-action="VehicleAnalysis" class="btn-auth" style="width:200px;">Vehicle Analysis</a>
-            <a asp-action="ClaimsReport" class="btn-auth" style="width:200px;">Claims Report</a>
-            <a asp-action="Renewals" class="btn-auth" style="width:200px;">Due Renewals</a>
-            <a asp-action="Lapsed" class="btn-auth" style="width:200px;">Lapsed Policies</a>
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Management Reports</h1>
+        <p>Analytics and reporting dashboard for VehicleShield</p>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+
+<div class="content-grid cols-4" style="margin-bottom:20px;">
+
+    <div class="card">
+        <div class="card-body">
+            <span style="color:var(--text-muted);">Total Claims</span>
+            <h2 style="margin-top:10px;">@Model.ClaimsSummary.TotalClaims</h2>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-body">
+            <span style="color:var(--text-muted);">Approved Claims</span>
+            <h2 style="margin-top:10px;color:#4ade80;">
+                @Model.ClaimsSummary.ApprovedClaims
+            </h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <span style="color:var(--text-muted);">Pending Claims</span>
+            <h2 style="margin-top:10px;color:#facc15;">
+                @Model.ClaimsSummary.PendingClaims
+            </h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <span style="color:var(--text-muted);">Rejected Claims</span>
+            <h2 style="margin-top:10px;color:#ef4444;">
+                @Model.ClaimsSummary.RejectedClaims
+            </h2>
+        </div>
+    </div>
+
+</div>
+
+<!-- Monthly Sales Report -->
+
+<div class="card" style="margin-bottom:20px;">
+
+    <div class="card-header">
+        <h3>Monthly Sales Report</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Policies Sold</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.MonthlySales)
+                    {
+                        <tr>
+                            <td>@item.MonthName @item.Year</td>
+                            <td>@item.PolicyCount</td>
+                            <td>Rs. @item.TotalRevenue.ToString("N0")</td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Vehicle Analysis -->
+
+<div class="card" style="margin-bottom:20px;">
+
+    <div class="card-header">
+        <h3>Vehicle Wise Analysis</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Policies</th>
+                        <th>Total Insured Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.VehicleWise)
+                    {
+                        <tr>
+                            <td>@item.VehicleName</td>
+                            <td>@item.PolicyCount</td>
+                            <td>
+                                Rs. @item.TotalInsuredAmount.ToString("N0")
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Claims Report -->
+
+<div class="card" style="margin-bottom:20px;">
+
+    <div class="card-header">
+        <h3>Claims Report</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="content-grid cols-2">
+
+            <div>
+                <p>
+                    <strong>Total Claimable Amount:</strong><br />
+                    Rs. @Model.ClaimsSummary.TotalClaimableAmount.ToString("N0")
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <strong>Total Approved Amount:</strong><br />
+                    Rs. @Model.ClaimsSummary.TotalApprovedAmount.ToString("N0")
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Due Renewals -->
+
+<div class="card" style="margin-bottom:20px;">
+
+    <div class="card-header">
+        <h3>Policies Due For Renewal</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Policy No</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Expiry Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.DueRenewals)
+                    {
+                        <tr>
+                            <td>@item.PolicyNumber</td>
+                            <td>@item.CustomerName</td>
+                            <td>@item.VehicleName</td>
+                            <td>
+                                @item.PolicyEndDate.ToString("dd MMM yyyy")
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Lapsed Policies -->
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Lapsed Policies</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Policy No</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.LapsedPolicies)
+                    {
+                        <tr>
+
+                            <td>@item.PolicyNumber</td>
+
+                            <td>@item.CustomerName</td>
+
+                            <td>@item.VehicleName</td>
+
+                            <td>
+                                <span style="
+                                        padding:6px 12px;
+                                        border-radius:20px;
+                                        background:rgba(239,68,68,.15);
+                                        color:#ef4444;
+                                        font-weight:600;">
+                                    @item.Status
+                                </span>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </div>

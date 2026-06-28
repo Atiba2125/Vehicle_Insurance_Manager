@@ -53,7 +53,7 @@
 
                 <p><strong>Policy Type:</strong> @Model.PolicyType</p>
 
-                <p><strong>Status:</strong> @Model.Status</p>
+                <p style="display:flex; align-items:center; gap:8px;"><strong>Status:</strong> <span class="badge @(Model.Status == "Active" ? "badge-active" : "badge-expired")">@Model.Status</span></p>
 
                 <p><strong>Policy Date:</strong> @Model.PolicyDate.ToString("dd MMM yyyy")</p>
 

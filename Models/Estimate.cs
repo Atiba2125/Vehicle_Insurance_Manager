@@ -9,11 +9,19 @@ namespace VehicleShield.Models
         [Key]
         public int EstimateId { get; set; }
 
+        // Customer
         [Required]
         public int CustomerId { get; set; }
-        
+
         [ForeignKey("CustomerId")]
         public Customer? Customer { get; set; }
+
+        // Policy
+        [Required]
+        public int PolicyId { get; set; }
+
+        [ForeignKey("PolicyId")]
+        public Policy? Policy { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -41,7 +49,7 @@ namespace VehicleShield.Models
 
         [Required]
         [StringLength(50)]
-        public string VehiclePolicyType { get; set; } = string.Empty; // "Third Party", "Comprehensive", "Premium Elite"
+        public string VehiclePolicyType { get; set; } = string.Empty;
 
         public DateTime DateCreated { get; set; } = DateTime.Now;
     }

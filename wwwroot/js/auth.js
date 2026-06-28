@@ -37,7 +37,7 @@ if (registerForm) {
       const label = document.getElementById('strengthLabel');
       
       if(bar && label) {
-          const colors = ['', '#FF6B6B', '#F7C948', '#3ECFCF', '#6C63FF'];
+          const colors = ['', '#FF6B6B', '#F59E0B', '#FFE500', '#10B981'];
           const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
           bar.style.width = `${strength * 25}%`;
           bar.style.background = colors[strength];

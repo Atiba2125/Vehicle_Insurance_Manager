@@ -1,14 +1,263 @@
 @model VehicleShield.Models.Expense
-@{ ViewData["Title"] = "Details Expense"; 
+
+@{
+    ViewData["Title"] = "Expense Details";
     Layout = "_AdminLayout";
 }
-<div class="auth-layout" style="min-height: calc(100vh - 80px); padding: 40px 20px;">
-    <div class="auth-card" style="max-width: 800px; width: 100%;">
-        <h2>Expense Details</h2>
-        <div><hr /><dl class="row"><dt class="col-sm-3">Information</dt><dd class="col-sm-9">@Model.ToString()</dd></dl></div>
-        <div style="margin-top:20px;">
-            <a asp-action="Edit" asp-route-id="@Model?.GetType().GetProperty("ExpenseId")?.GetValue(Model)" class="btn-auth" style="width:100px; display:inline-flex; margin-right:10px;">Edit</a>
-            <a asp-action="Index" style="color:#6C63FF; text-decoration:none;">Back to List</a>
-        </div>
+
+<div class="page-header">
+
+    <div class="page-header-left">
+        <h1>Expense Details</h1>
+        <p>Complete expense record information</p>
     </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.ExpenseId"
+           class="btn btn-primary">
+            Edit Expense
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back To List
+        </a>
+
+    </div>
+  
+
+</div>
+
+<div class="content-grid cols-2">
+
+ 
+    <!-- Expense Information -->
+
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Expense Information</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="
+            display:flex;
+            flex-direction:column;
+            gap:18px;">
+
+                <div style="
+                display:flex;
+                justify-content:space-between;">
+
+                    <span style="color:var(--text-muted);">
+                        Expense ID
+                    </span>
+
+                    <strong>
+                        #@Model.ExpenseId
+                    </strong>
+
+                </div>
+
+                <div style="
+                display:flex;
+                justify-content:space-between;">
+
+                    <span style="color:var(--text-muted);">
+                        Expense Type
+                    </span>
+
+                    <strong>
+                        @Model.TypeOfExpense
+                    </strong>
+
+                </div>
+
+                <div style="
+                display:flex;
+                justify-content:space-between;">
+
+                    <span style="color:var(--text-muted);">
+                        Date Of Expense
+                    </span>
+
+                    <strong>
+                        @Model.DateOfExpense.ToString("dd MMM yyyy")
+                    </strong>
+
+                </div>
+
+                <div style="
+                display:flex;
+                justify-content:space-between;">
+
+                    <span style="color:var(--text-muted);">
+                        Amount
+                    </span>
+
+                    <strong style="
+                    color:#4ade80;
+                    font-size:18px;">
+
+                        Rs. @Model.AmountOfExpense.ToString("N0")
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Summary Card -->
+
+    <div class="card">
+
+        <div class="card-header">
+            <h3>Expense Summary</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div style="
+            display:flex;
+            flex-direction:column;
+            gap:20px;">
+
+                <div>
+
+                    <span style="
+                    color:var(--text-muted);
+                    display:block;
+                    margin-bottom:8px;">
+
+                        Expense Category
+
+                    </span>
+
+                    <div style="
+                    padding:14px;
+                    border-radius:12px;
+                    background:rgba(255,255,255,.03);">
+
+                        @Model.TypeOfExpense
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <span style="
+                    color:var(--text-muted);
+                    display:block;
+                    margin-bottom:8px;">
+
+                        Financial Impact
+
+                    </span>
+
+                    <div style="
+                    padding:14px;
+                    border-radius:12px;
+                    background:rgba(255,255,255,.03);">
+
+                        This expense has a value of
+                        <strong style="color:#4ade80;">
+                            Rs. @Model.AmountOfExpense.ToString("N0")
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  
+
+</div>
+
+<!-- Expense Overview -->
+
+<div class="card" style="margin-top:20px;">
+
+    <div class="card-header">
+        <h3>Expense Overview</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="content-grid cols-2">
+
+            <div>
+
+                <div style="margin-bottom:18px;">
+
+                    <span style="color:var(--text-muted);">
+                        Expense Type
+                    </span>
+
+                    <h5>
+                        @Model.TypeOfExpense
+                    </h5>
+
+                </div>
+
+                <div style="margin-bottom:18px;">
+
+                    <span style="color:var(--text-muted);">
+                        Recorded Date
+                    </span>
+
+                    <h5>
+                        @Model.DateOfExpense.ToString("dd MMM yyyy")
+                    </h5>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <div style="margin-bottom:18px;">
+
+                    <span style="color:var(--text-muted);">
+                        Amount
+                    </span>
+
+                    <h5 style="color:#4ade80;">
+
+                        Rs. @Model.AmountOfExpense.ToString("N0")
+
+                    </h5>
+
+                </div>
+
+                <div style="margin-bottom:18px;">
+
+                    <span style="color:var(--text-muted);">
+                        Record Status
+                    </span>
+
+                    <h5 style="color:#4ade80;">
+                        Active Expense Record
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  
+
 </div>

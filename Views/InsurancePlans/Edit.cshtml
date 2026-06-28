@@ -1,0 +1,229 @@
+﻿@model VehicleShield.Models.InsurancePlan
+
+@{
+    ViewData["Title"] = "Edit Insurance Plan";
+    Layout = "_AdminLayout";
+}
+
+<div class="page-header">
+
+    <div class="page-header-left">
+        <h1>Edit Insurance Plan</h1>
+        <p>
+            Update insurance plan information
+        </p>
+    </div>
+
+    <div class="page-header-actions">
+
+        <a asp-action="Details"
+           asp-route-id="@Model.InsurancePlanId"
+           class="btn btn-outline">
+            View Details
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-outline">
+            Back To List
+        </a>
+
+    </div>
+
+
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h3>Edit Plan Information</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Edit">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <input type="hidden"
+                   asp-for="InsurancePlanId" />
+
+            <div class="content-grid cols-2">
+
+                <div class="form-group">
+
+                    <label asp-for="PlanName">
+                        Plan Name
+                    </label>
+
+                    <input asp-for="PlanName"
+                           class="form-control"
+                           placeholder="Enter Plan Name" />
+
+                    <span asp-validation-for="PlanName"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="Price">
+                        Plan Price
+                    </label>
+
+                    <input asp-for="Price"
+                           class="form-control"
+                           placeholder="Enter Price" />
+
+                    <span asp-validation-for="Price"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Description">
+                    Description
+                </label>
+
+                <textarea asp-for="Description"
+                          rows="4"
+                          class="form-control"
+                          placeholder="Enter Plan Description">
+            </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Features">
+                    Features
+                </label>
+
+                <textarea asp-for="Features"
+                          rows="5"
+                          class="form-control"
+                          placeholder="Enter Plan Features">
+            </textarea>
+
+                <span asp-validation-for="Features"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <br />
+
+            <div class="content-grid cols-2">
+
+                <div class="card" style="padding:20px;">
+
+                    <label style="
+               display:flex;
+               align-items:center;
+               gap:12px;
+               cursor:pointer;
+               margin:0;">
+
+                        <input asp-for="IsPopular"
+                               style="
+                   width:18px;
+                   height:18px;" />
+
+                        <div>
+
+                            <div style="
+                     font-weight:600;
+                     color:#fff;">
+                                Popular Plan
+                            </div>
+
+                            <small style="
+                       color:var(--text-muted);">
+                                Show this plan as featured on website
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+                <div class="card" style="padding:20px;">
+
+                    <label style="
+               display:flex;
+               align-items:center;
+               gap:12px;
+               cursor:pointer;
+               margin:0;">
+
+                        <input asp-for="IsActive"
+                               style="
+                   width:18px;
+                   height:18px;" />
+
+                        <div>
+
+                            <div style="
+                     font-weight:600;
+                     color:#fff;">
+                                Active Plan
+                            </div>
+
+                            <small style="
+                       color:var(--text-muted);">
+                                Display this plan on website
+                            </small>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            
+            <div style="
+            margin-top:25px;
+            display:flex;
+            gap:10px;">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Save Changes
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+ 
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
