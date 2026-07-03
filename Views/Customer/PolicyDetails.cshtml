@@ -67,7 +67,7 @@
                 </div>
                 <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
                     <span style="color:var(--text-muted); font-size:0.85rem;">Vehicle Rate (IDV)</span>
-                    <span style="color:#fff; font-weight:600;">₹@Model.VehicleRate.ToString("N0")</span>
+                    <span style="color:#fff; font-weight:600;">Rs. @Model.VehicleRate.ToString("N0")</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
                     <span style="color:var(--text-muted); font-size:0.85rem;">Chassis Body Number</span>
@@ -110,7 +110,7 @@
                             <tr>
                                 <td style="font-weight: 700; color: #fff;">@bill.BillNo</td>
                                 <td>@bill.BillDate.ToString("MMM dd, yyyy")</td>
-                                <td style="font-weight: 600; color: #fff;">₹@bill.Amount.ToString("N2")</td>
+                                <td style="font-weight: 600; color: #fff;">Rs. @bill.Amount.ToString("N2")</td>
                                 <td>
                                     <span class="badge badge-active">@bill.PaymentStatus</span>
                                 </td>
@@ -153,7 +153,7 @@
                                 <td style="font-weight: 700; color: #fff;">@claim.ClaimNumber</td>
                                 <td>@claim.DateOfAccident.ToString("MMM dd, yyyy")</td>
                                 <td>@claim.PlaceOfAccident</td>
-                                <td style="font-weight: 600;">₹@claim.ClaimableAmount.ToString("N2")</td>
+                                <td style="font-weight: 600;">Rs. @claim.ClaimableAmount.ToString("N2")</td>
                                 <td>
                                     <span class="badge @(claim.Status == "Approved" ? "badge-active" : (claim.Status == "Pending" ? "badge-pending" : "badge-inactive"))">@claim.Status</span>
                                 </td>

@@ -140,7 +140,7 @@ namespace VehicleShield.Controllers
                     VehicleRate = policy.VehicleRate,
                     VehicleBodyNumber = policy.VehicleBodyNumber,
                     VehicleEngineNumber = policy.VehicleEngineNumber,
-                    BillDate = DateTime.Now,
+                    BillDate = policy.PolicyDate,
                     Amount = billAmount,
                     PaymentStatus = "Paid"
                 };
@@ -167,7 +167,7 @@ namespace VehicleShield.Controllers
                     VehicleWarranty = policy.VehicleWarranty,
                     VehiclePolicyType = policy.PolicyType,
 
-                    DateCreated = DateTime.Now
+                    DateCreated = policy.PolicyDate
                 };
 
                 _context.Estimates.Add(estimate);

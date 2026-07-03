@@ -8,15 +8,15 @@
 <!-- ===== PAGE HEADER ===== -->
 <div class="page-header">
     <div class="page-header-left">
-        <h1>Naya Claim</h1>
-        <p>Insurance claim darj karein — tamam fields lazmi hain</p>
+        <h1>New Claim</h1>
+        <p>Register insurance claim — all fields are required</p>
     </div>
     <div class="page-header-actions">
         <a asp-action="Index" class="btn btn-outline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Wapas Jayein
+            Back to List
         </a>
     </div>
 </div>
@@ -41,7 +41,7 @@
                 <label class="form-label">Policy</label>
                 <div class="select-wrapper">
                     <select asp-for="PolicyId" asp-items="ViewBag.Policies" class="form-control">
-                        <option value="">-- Policy chunein --</option>
+                        <option value="">-- Choose Policy --</option>
                     </select>
                     <svg class="select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none">
                         <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -59,9 +59,9 @@
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
                             <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
                         </svg>
-                        Jagah (Accident ka)
+                        Place of Accident
                     </label>
-                    <input asp-for="PlaceOfAccident" class="form-control" placeholder="Mثال: Lahore Ring Road, KPK Highway…" />
+                    <input asp-for="PlaceOfAccident" class="form-control" placeholder="Example: Lahore Ring Road, KPK Highway…" />
                     <span asp-validation-for="PlaceOfAccident" class="field-error"></span>
                 </div>
 
@@ -73,7 +73,7 @@
                             <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
                         </svg>
-                        Accident ki Tarikh
+                        Date of Accident
                     </label>
                     <input asp-for="DateOfAccident" type="date" class="form-control" />
                     <span asp-validation-for="DateOfAccident" class="field-error"></span>
@@ -130,9 +130,9 @@
                         <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2"/>
                         <path d="M17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    Claim Save Karein
+                    Save Claim
                 </button>
-                <a asp-action="Index" class="btn btn-outline">Wapas Jayein</a>
+                <a asp-action="Index" class="btn btn-outline">Cancel</a>
             </div>
 
         </form>

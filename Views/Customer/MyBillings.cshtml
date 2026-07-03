@@ -1,0 +1,67 @@
+@model IEnumerable<VehicleShield.Models.Billing>
+@{
+    ViewData["Title"] = "My Invoices";
+    Layout = "_CustomerLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>My Premium Billings</h1>
+        <p>View and track all payments, transactions, and premium invoice details</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Invoice History</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>Policy Number</th>
+                            <th>Vehicle Insured</th>
+                            <th>Date Issued</th>
+                            <th>Premium Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var bill in Model)
+                        {
+                            <tr>
+                                <td style="font-weight: 700; color: #fff;">@bill.BillNo</td>
+                                <td style="font-weight: 600; color: var(--primary);">@bill.PolicyNumber</td>
+                                <td>
+                                    <div style="font-weight: 600; color: #fff;">@bill.VehicleName</div>
+                                    <small style="color: var(--text-muted);">Model: @bill.VehicleModel</small>
+                                </td>
+                                <td>@bill.BillDate.ToString("MMM dd, yyyy")</td>
+                                <td style="font-weight: 700; color: #4ade80;">Rs. @bill.Amount.ToString("N2")</td>
+                                <td>
+                                    <span class="badge badge-active">@bill.PaymentStatus</span>
+                                </td>
+                                <td>
+                                    <a asp-action="PolicyDetails" asp-route-id="@bill.PolicyId" class="btn btn-outline btn-sm">
+                                        View Policy
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <p>No billing or transaction records found.</p>
+            </div>
+        }
+    </div>
+</div>

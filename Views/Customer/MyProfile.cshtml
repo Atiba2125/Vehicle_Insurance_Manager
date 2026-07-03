@@ -1,0 +1,82 @@
+@model VehicleShield.Models.Customer
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "_CustomerLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>My Personal Profile</h1>
+        <p>Manage your account personal specifications, contact number, and verification address</p>
+    </div>
+</div>
+
+<div class="content-grid cols-3-2">
+    <!-- Profile Edit Form -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Profile Settings</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="MyProfile" method="post" style="display:flex; flex-direction:column; gap:18px;">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group" style="padding:0;">
+                    <label for="customerName" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Full Name</label>
+                    <input type="text" id="customerName" name="customerName" value="@Model.CustomerName" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                </div>
+
+                <div class="form-group" style="padding:0;">
+                    <label for="customerPhone" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Phone Number</label>
+                    <input type="text" id="customerPhone" name="customerPhone" value="@Model.CustomerPhone" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
+                </div>
+
+                <div class="form-group" style="padding:0;">
+                    <label for="customerAddress" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Permanent Address</label>
+                    <textarea id="customerAddress" name="customerAddress" rows="3" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff; font-family:inherit;">@Model.CustomerAddress</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="justify-content:center; padding:12px; font-weight:700; margin-top:5px;">
+                    Update Profile Details
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Overview Card -->
+    <div class="card" style="height: fit-content;">
+        <div class="card-header">
+            <h3>Portfolio Summary</h3>
+        </div>
+        <div class="card-body" style="display:flex; flex-direction:column; gap:16px;">
+            <div style="text-align:center; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+                <div style="width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg,#FFD600,#FFAB00); display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:800; color:#000; margin:0 auto 10px;">
+                    @{
+                        string initial = "C";
+                        if (!string.IsNullOrWhiteSpace(Model.CustomerName)) {
+                            initial = Model.CustomerName[0].ToString().ToUpper();
+                        }
+                    }
+                    @initial
+                </div>
+                <h4 style="font-family:'Outfit',sans-serif; color:#fff; font-size:1.1rem; margin-bottom:3px;">@Model.CustomerName</h4>
+                <p style="font-size:0.75rem; color:var(--text-muted);">Verified Customer Account</p>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:12px; font-size:0.82rem;">
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Registered Vehicles</span>
+                    <span style="color:#fff; font-weight:600;">@Model.Vehicles.Count</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Active Policies</span>
+                    <span style="color:#fff; font-weight:600;">@Model.Policies.Count(p => p.Status == "Active")</span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="color:var(--text-muted);">Total Claims Filed</span>
+                    <span style="color:#fff; font-weight:600;">@Model.Claims.Count</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

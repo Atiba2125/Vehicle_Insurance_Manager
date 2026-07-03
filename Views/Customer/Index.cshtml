@@ -49,7 +49,7 @@
             </div>
             <span class="stat-trend trend-up">Settled</span>
         </div>
-        <div class="stat-value">₹@ViewBag.ApprovedClaimsAmount.ToString("N0")</div>
+        <div class="stat-value">Rs. @ViewBag.ApprovedClaimsAmount.ToString("N0")</div>
         <div class="stat-label">Total Claims Approved</div>
     </div>
     <div class="stat-card">
@@ -59,7 +59,7 @@
             </div>
             <span class="stat-trend trend-up">Paid</span>
         </div>
-        <div class="stat-value">₹@ViewBag.TotalBillingAmount.ToString("N0")</div>
+        <div class="stat-value">Rs. @ViewBag.TotalBillingAmount.ToString("N0")</div>
         <div class="stat-label">Total Premium Paid</div>
     </div>
 </div>
@@ -115,7 +115,7 @@
         <div class="card">
             <div class="card-header"><h3>Quick Actions</h3></div>
             <div class="card-body">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
                     <a asp-action="BuyPolicy" class="quick-action-btn">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2"/></svg>
                         <span>Buy Policy</span>
@@ -128,7 +128,11 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         <span>My Policies</span>
                     </a>
-                    <a asp-controller="Account" asp-action="ChangePassword" class="quick-action-btn">
+                    <a asp-action="SubmitFeedback" class="quick-action-btn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke="currentColor" stroke-width="2"/></svg>
+                        <span>My Review</span>
+                    </a>
+                    <a asp-controller="Account" asp-action="ChangePassword" class="quick-action-btn" style="grid-column:span 2">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/></svg>
                         <span>Security</span>
                     </a>
@@ -160,7 +164,7 @@
                                 <p style="font-size:0.85rem;font-weight:600;color:#fff">Accident Claim</p>
                             </div>
                             <span class="badge @(latestClaim.Status == "Approved" ? "badge-active" : (latestClaim.Status == "Pending" ? "badge-pending" : "badge-inactive"))">@latestClaim.Status</span>
-                            <p style="font-size:0.78rem;color:var(--text-muted)">Claimable: <strong style="color:#fff">₹@latestClaim.ClaimableAmount.ToString("N0")</strong></p>
+                            <p style="font-size:0.78rem;color:var(--text-muted)">Claimable: <strong style="color:#fff">Rs. @latestClaim.ClaimableAmount.ToString("N0")</strong></p>
                         </div>
                     </div>
                     <div class="claim-steps">

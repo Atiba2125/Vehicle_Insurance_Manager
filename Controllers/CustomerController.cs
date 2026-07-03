@@ -75,10 +75,14 @@ namespace VehicleShield.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BuyPolicy()
+        public async Task<IActionResult> BuyPolicy(string planName = "")
         {
             var customer = await GetCurrentCustomerAsync();
             if (customer == null) return RedirectToAction("Login", "Account");
+
+            var activePlans = await _context.InsurancePlans.Where(p => p.IsActive).ToListAsync();
+            ViewBag.InsurancePlans = activePlans;
+            ViewBag.PreSelectedPlanName = planName;
 
             return View();
         }
@@ -109,10 +113,19 @@ namespace VehicleShield.Controllers
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
 
-            // 2. Calculate Premium Rate based on vehicle value and policy type
-            decimal annualRate = 0.05m; // 5% of vehicle value for Comprehensive
-            if (policyType == "Third Party") annualRate = 0.015m; // 1.5%
-            else if (policyType == "Premium Elite") annualRate = 0.08m; // 8%
+            // 2. Calculate Premium Rate based on vehicle value and policy type from Database
+            var plan = await _context.InsurancePlans.FirstOrDefaultAsync(p => p.IsActive && p.PlanName == policyType);
+            decimal annualRate = 0.05m; // fallback 5%
+            if (plan != null)
+            {
+                annualRate = plan.Price / 100m;
+            }
+            else
+            {
+                // Fallback for static safety
+                if (policyType == "Third Party") annualRate = 0.015m;
+                else if (policyType == "Premium Elite") annualRate = 0.08m;
+            }
 
             decimal baseAmount = vehicleRate * annualRate;
             decimal totalAmount = baseAmount * durationYears;
@@ -163,7 +176,7 @@ namespace VehicleShield.Controllers
                 VehicleRate = vehicle.VehicleRate,
                 VehicleBodyNumber = vehicle.BodyNumber,
                 VehicleEngineNumber = vehicle.EngineNumber,
-                BillDate = DateTime.Now,
+                BillDate = policy.PolicyDate,
                 Amount = totalAmount,
                 PaymentStatus = "Paid"
             };
@@ -174,6 +187,7 @@ namespace VehicleShield.Controllers
             var estimate = new Estimate
             {
                 CustomerId = customer.CustomerId,
+                PolicyId = policy.PolicyId, // Linked to the newly purchased policy
                 CustomerName = customer.CustomerName,
                 CustomerPhone = customer.CustomerPhone,
                 VehicleName = vehicle.VehicleName,
@@ -181,7 +195,7 @@ namespace VehicleShield.Controllers
                 VehicleRate = vehicle.VehicleRate,
                 VehicleWarranty = policy.VehicleWarranty,
                 VehiclePolicyType = policyType,
-                DateCreated = DateTime.Now
+                DateCreated = policy.PolicyDate
             };
             _context.Estimates.Add(estimate);
             await _context.SaveChangesAsync();
@@ -253,6 +267,177 @@ namespace VehicleShield.Controllers
 
             TempData["SuccessMessage"] = $"Claim request {claim.ClaimNumber} submitted successfully! Admin will review it shortly.";
             return RedirectToAction("MyClaims");
+        }
+
+        // ==========================================
+        // NEW ACTION: Browse Active Insurance Plans
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> BrowsePlans()
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            var plans = await _context.InsurancePlans
+                .Where(p => p.IsActive)
+                .ToListAsync();
+
+            return View(plans);
+        }
+
+        // ==========================================
+        // NEW ACTION: Unified Invoices / Billings List
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> MyBillings()
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            var billings = await _context.Billings
+                .Where(b => b.CustomerId == customer.CustomerId)
+                .OrderByDescending(b => b.BillDate)
+                .ToListAsync();
+
+            return View(billings);
+        }
+
+        // ==========================================
+        // NEW ACTION: Historical Estimates List
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> MyEstimates()
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            var estimates = await _context.Estimates
+                .Where(e => e.CustomerId == customer.CustomerId)
+                .OrderByDescending(e => e.DateCreated)
+                .ToListAsync();
+
+            return View(estimates);
+        }
+
+        // ==========================================
+        // NEW ACTION: View Profile Details
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> MyProfile()
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            return View(customer);
+        }
+
+        // ==========================================
+        // NEW ACTION: Update Profile Details
+        // ==========================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MyProfile(string customerName, string customerAddress, string customerPhone)
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            if (string.IsNullOrWhiteSpace(customerName) || string.IsNullOrWhiteSpace(customerAddress) || string.IsNullOrWhiteSpace(customerPhone))
+            {
+                TempData["ErrorMessage"] = "All fields are required.";
+                return View(customer);
+            }
+
+            customer.CustomerName = customerName;
+            customer.CustomerAddress = customerAddress;
+            customer.CustomerPhone = customerPhone;
+
+            _context.Update(customer);
+            await _context.SaveChangesAsync();
+
+            // Also update ApplicationUser's FullName to match the Customer Name
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                user.FullName = customerName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            TempData["SuccessMessage"] = "Profile details updated successfully!";
+            return RedirectToAction("MyProfile");
+        }
+
+        // ==========================================
+        // NEW ACTION: Submit Feedback / Review
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> SubmitFeedback()
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            // Check if customer already submitted a feedback
+            var existing = await _context.CustomerFeedbacks
+                .FirstOrDefaultAsync(f => f.CustomerId == customer.CustomerId);
+
+            ViewBag.ExistingFeedback = existing;
+
+            // Pass their active policy types for the tag dropdown
+            var myPolicyTypes = await _context.Policies
+                .Where(p => p.CustomerId == customer.CustomerId)
+                .Select(p => p.PolicyType)
+                .Distinct()
+                .ToListAsync();
+
+            ViewBag.PolicyTypes = myPolicyTypes;
+
+            return View(customer);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitFeedback(int rating, string reviewText, string policyTag)
+        {
+            var customer = await GetCurrentCustomerAsync();
+            if (customer == null) return RedirectToAction("Login", "Account");
+
+            if (rating < 1 || rating > 5 || string.IsNullOrWhiteSpace(reviewText))
+            {
+                TempData["ErrorMessage"] = "Rating and review text are required.";
+                return RedirectToAction("SubmitFeedback");
+            }
+
+            // Check if already submitted — update instead of duplicate
+            var existing = await _context.CustomerFeedbacks
+                .FirstOrDefaultAsync(f => f.CustomerId == customer.CustomerId);
+
+            if (existing != null)
+            {
+                existing.Rating = rating;
+                existing.ReviewText = reviewText.Trim();
+                existing.PolicyTag = string.IsNullOrWhiteSpace(policyTag) ? "General" : policyTag.Trim();
+                existing.IsApproved = true; // Re-approval not needed, make it live by default
+                existing.SubmittedAt = DateTime.Now;
+                _context.Update(existing);
+            }
+            else
+            {
+                var feedback = new CustomerFeedback
+                {
+                    CustomerId = customer.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    Rating = rating,
+                    ReviewText = reviewText.Trim(),
+                    PolicyTag = string.IsNullOrWhiteSpace(policyTag) ? "General" : policyTag.Trim(),
+                    IsApproved = true, // Live by default on first submit
+                    SubmittedAt = DateTime.Now
+                };
+                _context.CustomerFeedbacks.Add(feedback);
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Thank you! Your review has been submitted and is now live on the website.";
+            return RedirectToAction("SubmitFeedback");
         }
     }
 }

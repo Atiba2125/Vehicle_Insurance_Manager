@@ -1,5 +1,7 @@
+@model IEnumerable<VehicleShield.Models.InsurancePlan>
 @{
     ViewData["Title"] = "Drive with Confidence – VehicleShield";
+    var approvedFeedbacks = ViewBag.ApprovedFeedbacks as List<VehicleShield.Models.CustomerFeedback> ?? new List<VehicleShield.Models.CustomerFeedback>();
 }
 
 <!-- ========== HERO ========== -->
@@ -204,54 +206,69 @@
             <p class="section-desc">Flexible insurance solutions tailored to meet every driver's unique needs and budget.</p>
         </div>
         <div class="plans-grid">
-            <div class="plan-card" data-plan="basic">
-                <div class="plan-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var plan in Model)
+                {
+                    <div class="plan-card @(plan.IsPopular ? "plan-popular" : "")" data-plan="@plan.PlanName.ToLower().Replace(" ", "-")">
+                        @if (plan.IsPopular)
+                        {
+                            <div class="plan-popular-badge">Most Popular</div>
+                        }
+                        <div class="plan-icon">
+                            @if (plan.PlanName.Contains("Third Party"))
+                            {
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
+                            }
+                            else if (plan.PlanName.Contains("Comprehensive"))
+                            {
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M20 8H4L2 14v4h20v-4L20 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2" /><circle cx="17" cy="18" r="2" stroke="currentColor" stroke-width="2" /></svg>
+                            }
+                            else
+                            {
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
+                            }
+                        </div>
+                        <h3>@plan.PlanName</h3>
+                        <p class="plan-desc">@plan.Description</p>
+                        <div class="plan-price">
+                            <span class="price-from">Premium Rate</span>
+                            <span class="price-val">@plan.Price.ToString("0.##")% IDV / yr</span>
+                        </div>
+                        <ul class="plan-features">
+                            @if (!string.IsNullOrEmpty(plan.Features))
+                            {
+                                var features = plan.Features.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var feat in features)
+                                {
+                                    <li>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                            <path d="M20 6L9 17l-5-5" stroke="@(plan.IsPopular ? "#FFD600" : "var(--primary)")" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg> 
+                                        @feat.Trim()
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                        <path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg> 
+                                    Standard Coverage
+                                </li>
+                            }
+                        </ul>
+                        <a asp-controller="Account" asp-action="Register" class="btn @(plan.IsPopular ? "btn-primary" : "btn-outline") plan-btn">Get This Plan</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="plan-card" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                    <p>No insurance plans are currently available. Please check back later.</p>
                 </div>
-                <h3>Third Party</h3>
-                <p class="plan-desc">Basic mandatory coverage that protects you against third-party liabilities. Ideal for older vehicles.</p>
-                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">Rs. 5,000/yr</span></div>
-                <ul class="plan-features">
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Third-party liability</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Property damage cover</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Legal compliance</li>
-                    <li class="plan-feat-no"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#666" stroke-width="2" stroke-linecap="round" /></svg> Own damage cover</li>
-                </ul>
-                <a asp-controller="Account" asp-action="Register" class="btn btn-outline plan-btn">Get This Plan</a>
-            </div>
-            <div class="plan-card plan-popular" data-plan="comprehensive">
-                <div class="plan-popular-badge">Most Popular</div>
-                <div class="plan-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M20 8H4L2 14v4h20v-4L20 8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /><circle cx="7" cy="18" r="2" stroke="currentColor" stroke-width="2" /><circle cx="17" cy="18" r="2" stroke="currentColor" stroke-width="2" /></svg>
-                </div>
-                <h3>Comprehensive</h3>
-                <p class="plan-desc">All-inclusive protection covering your vehicle and third-party liabilities. The complete package for peace of mind.</p>
-                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">Rs. 18,000/yr</span></div>
-                <ul class="plan-features">
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Own damage cover</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Third-party liability</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Theft & fire protection</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Natural disaster cover</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Zero depreciation add-on</li>
-                </ul>
-                <a asp-controller="Account" asp-action="Register" class="btn btn-primary plan-btn">Get This Plan</a>
-            </div>
-            <div class="plan-card" data-plan="premium">
-                <div class="plan-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
-                </div>
-                <h3>Premium Elite</h3>
-                <p class="plan-desc">The ultimate protection package with maximum coverage, zero depreciation, and priority claim handling.</p>
-                <div class="plan-price"><span class="price-from">Starting from</span><span class="price-val">Rs. 35,000/yr</span></div>
-                <ul class="plan-features">
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Everything in Comprehensive</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Roadside assistance</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Priority claim settlement</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Engine protection</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#F7C948" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg> Dedicated relationship manager</li>
-                </ul>
-                <a asp-controller="Account" asp-action="Register" class="btn btn-outline plan-btn">Get This Plan</a>
-            </div>
+            }
         </div>
     </div>
 </section>
@@ -329,232 +346,210 @@
         <!-- Marquee Row 1 — scrolls left -->
         <div class="tc-marquee-wrapper">
             <div class="tc-marquee tc-marquee-left">
-                <!-- Card 1 -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av1">AR</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Ahmed Raza</p>
-                            <p class="tc-card-role">Business Owner, Karachi</p>
+                @for (int loop = 0; loop < 2; loop++)
+                {
+                    <!-- Card 1 -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av1">AR</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Ahmed Raza</p>
+                                <p class="tc-card-role">Business Owner, Karachi</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">VehicleShield ne insurance ka poora process bahut aasaan bana diya. 3 din mein sab kuch settle ho gaya. Zabardast service!</p>
+                        <div class="tc-card-tag">Comprehensive Plan</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">VehicleShield ne insurance ka poora process bahut aasaan bana diya. 3 din mein sab kuch settle ho gaya. Zabardast service!</p>
-                    <div class="tc-card-tag">Comprehensive Plan</div>
-                </div>
-                <!-- Card 2 -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av2">SF</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Sara Farooq</p>
-                            <p class="tc-card-role">Software Engineer, Lahore</p>
+                    <!-- Card 2 -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av2">SF</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Sara Farooq</p>
+                                <p class="tc-card-role">Software Engineer, Lahore</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Online portal bohat user-friendly hai. Maine 2 minute mein apni policy renew kar li. Sab se acha insurance experience!</p>
+                        <div class="tc-card-tag">Policy Renewal</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Online portal bohat user-friendly hai. Maine 2 minute mein apni policy renew kar li. Sab se acha insurance experience!</p>
-                    <div class="tc-card-tag">Policy Renewal</div>
-                </div>
-                <!-- Card 3 -->
-                <div class="tc-card tc-card-gold">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av3">UK</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Usman Khan</p>
-                            <p class="tc-card-role">Doctor, Islamabad</p>
+                    <!-- Card 3 -->
+                    <div class="tc-card tc-card-gold">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av3">UK</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Usman Khan</p>
+                                <p class="tc-card-role">Doctor, Islamabad</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Koi hidden charges nahi. Bilkul transparent pricing. Premium Elite plan ne mujhe poora sukoon diya hai.</p>
+                        <div class="tc-card-tag">Premium Elite</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Koi hidden charges nahi. Bilkul transparent pricing. Premium Elite plan ne mujhe poora sukoon diya hai.</p>
-                    <div class="tc-card-tag">Premium Elite</div>
-                </div>
-                <!-- Card 4 -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av4">ZA</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Zara Akhtar</p>
-                            <p class="tc-card-role">Teacher, Peshawar</p>
+                    <!-- Card 4 -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av4">ZA</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Zara Akhtar</p>
+                                <p class="tc-card-role">Teacher, Peshawar</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Raat ko meri gaari kharab ho gayi aur unhone 20 minute mein roadside assistance bhej di. Waqai kabile taarif service!</p>
+                        <div class="tc-card-tag">24/7 Support</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Raat ko meri gaari kharab ho gayi aur unhone 20 minute mein roadside assistance bhej di. Waqai kabile taarif service!</p>
-                    <div class="tc-card-tag">24/7 Support</div>
-                </div>
-                <!-- Card 5 -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av5">MH</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Muhammad Hamza</p>
-                            <p class="tc-card-role">Engineer, Faisalabad</p>
+                    <!-- Card 5 -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av5">MH</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Muhammad Hamza</p>
+                                <p class="tc-card-role">Engineer, Faisalabad</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Bahut hi fast claim settlement mila. Mere dost bhi ab VehicleShield use kar rahe hain. Best decision tha yeh insurance lena!</p>
+                        <div class="tc-card-tag">Third Party</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Bahut hi fast claim settlement mila. Mere dost bhi ab VehicleShield use kar rahe hain. Best decision tha yeh insurance lena!</p>
-                    <div class="tc-card-tag">Third Party</div>
-                </div>
-                <!-- Duplicates for seamless loop -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av1">AR</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Ahmed Raza</p>
-                            <p class="tc-card-role">Business Owner, Karachi</p>
+
+                    <!-- Dynamic Approved Feedbacks (Even indexes) -->
+                    @foreach (var fb in approvedFeedbacks.Where((f, idx) => idx % 2 == 0))
+                    {
+                        var nameParts = fb.CustomerName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        var initials = nameParts.Length >= 2
+                            ? $"{nameParts[0][0]}{nameParts[1][0]}"
+                            : (fb.CustomerName.Length >= 2 ? fb.CustomerName.Substring(0, 2) : fb.CustomerName);
+                        var avatarColors = new[] { "av1","av2","av3","av4","av5" };
+                        var avClass = avatarColors[fb.FeedbackId % 5];
+                        <div class="tc-card @(fb.Rating == 5 ? "tc-card-gold" : "")">
+                            <div class="tc-card-top">
+                                <div class="tc-card-avatar @avClass">@initials.ToUpper()</div>
+                                <div class="tc-card-info">
+                                    <p class="tc-card-name">@fb.CustomerName</p>
+                                    <p class="tc-card-role">Verified Customer · @fb.SubmittedAt.ToString("MMM yyyy")</p>
+                                </div>
+                                <span class="tc-verified">✓ Verified</span>
+                            </div>
+                            <div class="tc-card-stars">
+                                @for (int s = 1; s <= 5; s++) { <span style="color:@(s <= fb.Rating ? "#FFE500" : "rgba(255,229,0,0.2)")">★</span> }
+                            </div>
+                            <p class="tc-card-text">"@fb.ReviewText"</p>
+                            <div class="tc-card-tag">@fb.PolicyTag</div>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">VehicleShield ne insurance ka poora process bahut aasaan bana diya. 3 din mein sab kuch settle ho gaya. Zabardast service!</p>
-                    <div class="tc-card-tag">Comprehensive Plan</div>
-                </div>
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av2">SF</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Sara Farooq</p>
-                            <p class="tc-card-role">Software Engineer, Lahore</p>
-                        </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Online portal bohat user-friendly hai. Maine 2 minute mein apni policy renew kar li. Sab se acha insurance experience!</p>
-                    <div class="tc-card-tag">Policy Renewal</div>
-                </div>
-                <div class="tc-card tc-card-gold">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av3">UK</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Usman Khan</p>
-                            <p class="tc-card-role">Doctor, Islamabad</p>
-                        </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Koi hidden charges nahi. Bilkul transparent pricing. Premium Elite plan ne mujhe poora sukoon diya hai.</p>
-                    <div class="tc-card-tag">Premium Elite</div>
-                </div>
+                    }
+                }
             </div>
         </div>
 
         <!-- Marquee Row 2 — scrolls right -->
         <div class="tc-marquee-wrapper">
             <div class="tc-marquee tc-marquee-right">
-                <!-- Card A -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av4">NA</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Nadia Ansari</p>
-                            <p class="tc-card-role">Architect, Multan</p>
+                @for (int loop = 0; loop < 2; loop++)
+                {
+                    <!-- Card A -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av4">NA</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Nadia Ansari</p>
+                                <p class="tc-card-role">Architect, Multan</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Mujhe koi umeed nahi thi itni jaldi claim hoga lekin VehicleShield ne poori raqam 4 din mein de di. Shukriya team!</p>
+                        <div class="tc-card-tag">Claim Settled</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Mujhe koi umeed nahi thi itni jaldi claim hoga lekin VehicleShield ne poori raqam 4 din mein de di. Shukriya team!</p>
-                    <div class="tc-card-tag">Claim Settled</div>
-                </div>
-                <!-- Card B -->
-                <div class="tc-card tc-card-gold">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av5">BK</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Bilal Kamran</p>
-                            <p class="tc-card-role">Businessman, Rawalpindi</p>
+                    <!-- Card B -->
+                    <div class="tc-card tc-card-gold">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av5">BK</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Bilal Kamran</p>
+                                <p class="tc-card-role">Businessman, Rawalpindi</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Pakistan mein itni reliable vehicle insurance service pehle nahi dekhi. Hamare poore family fleet ka insurance yahan hai!</p>
+                        <div class="tc-card-tag">Fleet Coverage</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Pakistan mein itni reliable vehicle insurance service pehle nahi dekhi. Hamare poore family fleet ka insurance yahan hai!</p>
-                    <div class="tc-card-tag">Fleet Coverage</div>
-                </div>
-                <!-- Card C -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av1">AS</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Ayesha Siddiqui</p>
-                            <p class="tc-card-role">Doctor, Quetta</p>
+                    <!-- Card C -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av1">AS</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Ayesha Siddiqui</p>
+                                <p class="tc-card-role">Doctor, Quetta</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Registration se le kar policy milne tak sirf 5 minute lage. Digital Pakistan ka asli faida yahi hai. Bohot khush hoon!</p>
+                        <div class="tc-card-tag">Instant Policy</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Registration se le kar policy milne tak sirf 5 minute lage. Digital Pakistan ka asli faida yahi hai. Bohot khush hoon!</p>
-                    <div class="tc-card-tag">Instant Policy</div>
-                </div>
-                <!-- Card D -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av2">OM</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Omar Malik</p>
-                            <p class="tc-card-role">Teacher, Hyderabad</p>
+                    <!-- Card D -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av2">OM</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Omar Malik</p>
+                                <p class="tc-card-role">Teacher, Hyderabad</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">App aur website dono bohat smooth hain. Customer support walay bhi bohat helpful hain. 10/10 recommend karunga!</p>
+                        <div class="tc-card-tag">Comprehensive Plan</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">App aur website dono bohat smooth hain. Customer support walay bhi bohat helpful hain. 10/10 recommend karunga!</p>
-                    <div class="tc-card-tag">Comprehensive Plan</div>
-                </div>
-                <!-- Card E -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av3">RN</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Rabia Nawaz</p>
-                            <p class="tc-card-role">Entrepreneur, Lahore</p>
+                    <!-- Card E -->
+                    <div class="tc-card">
+                        <div class="tc-card-top">
+                            <div class="tc-card-avatar av3">RN</div>
+                            <div class="tc-card-info">
+                                <p class="tc-card-name">Rabia Nawaz</p>
+                                <p class="tc-card-role">Entrepreneur, Lahore</p>
+                            </div>
+                            <span class="tc-verified">✓ Verified</span>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
+                        <div class="tc-card-stars">★★★★★</div>
+                        <p class="tc-card-text">Meri Corolla ka accident hua, full claim mila bina kisi jhanjhat ke. VehicleShield pe poora bharosa hai mujhe!</p>
+                        <div class="tc-card-tag">Claim Settled</div>
                     </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Meri Corolla ka accident hua, full claim mila bina kisi jhanjhat ke. VehicleShield pe poora bharosa hai mujhe!</p>
-                    <div class="tc-card-tag">Claim Settled</div>
-                </div>
-                <!-- Duplicates for seamless loop -->
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av4">NA</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Nadia Ansari</p>
-                            <p class="tc-card-role">Architect, Multan</p>
+
+                    <!-- Dynamic Approved Feedbacks (Odd indexes) -->
+                    @foreach (var fb in approvedFeedbacks.Where((f, idx) => idx % 2 != 0))
+                    {
+                        var nameParts = fb.CustomerName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        var initials = nameParts.Length >= 2
+                            ? $"{nameParts[0][0]}{nameParts[1][0]}"
+                            : (fb.CustomerName.Length >= 2 ? fb.CustomerName.Substring(0, 2) : fb.CustomerName);
+                        var avatarColors = new[] { "av1","av2","av3","av4","av5" };
+                        var avClass = avatarColors[fb.FeedbackId % 5];
+                        <div class="tc-card @(fb.Rating == 5 ? "tc-card-gold" : "")">
+                            <div class="tc-card-top">
+                                <div class="tc-card-avatar @avClass">@initials.ToUpper()</div>
+                                <div class="tc-card-info">
+                                    <p class="tc-card-name">@fb.CustomerName</p>
+                                    <p class="tc-card-role">Verified Customer · @fb.SubmittedAt.ToString("MMM yyyy")</p>
+                                </div>
+                                <span class="tc-verified">✓ Verified</span>
+                            </div>
+                            <div class="tc-card-stars">
+                                @for (int s = 1; s <= 5; s++) { <span style="color:@(s <= fb.Rating ? "#FFE500" : "rgba(255,229,0,0.2)")">★</span> }
+                            </div>
+                            <p class="tc-card-text">"@fb.ReviewText"</p>
+                            <div class="tc-card-tag">@fb.PolicyTag</div>
                         </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Mujhe koi umeed nahi thi itni jaldi claim hoga lekin VehicleShield ne poori raqam 4 din mein de di. Shukriya team!</p>
-                    <div class="tc-card-tag">Claim Settled</div>
-                </div>
-                <div class="tc-card tc-card-gold">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av5">BK</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Bilal Kamran</p>
-                            <p class="tc-card-role">Businessman, Rawalpindi</p>
-                        </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Pakistan mein itni reliable vehicle insurance service pehle nahi dekhi. Hamare poore family fleet ka insurance yahan hai!</p>
-                    <div class="tc-card-tag">Fleet Coverage</div>
-                </div>
-                <div class="tc-card">
-                    <div class="tc-card-top">
-                        <div class="tc-card-avatar av1">AS</div>
-                        <div class="tc-card-info">
-                            <p class="tc-card-name">Ayesha Siddiqui</p>
-                            <p class="tc-card-role">Doctor, Quetta</p>
-                        </div>
-                        <span class="tc-verified">✓ Verified</span>
-                    </div>
-                    <div class="tc-card-stars">★★★★★</div>
-                    <p class="tc-card-text">Registration se le kar policy milne tak sirf 5 minute lage. Digital Pakistan ka asli faida yahi hai. Bohot khush hoon!</p>
-                    <div class="tc-card-tag">Instant Policy</div>
-                </div>
+                    }
+                }
             </div>
         </div>
 

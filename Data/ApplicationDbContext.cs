@@ -22,6 +22,8 @@ namespace VehicleShield.Data
 
         public DbSet<InsurancePlan> InsurancePlans { get; set; }
 
+        public DbSet<CustomerFeedback> CustomerFeedbacks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -39,6 +41,12 @@ namespace VehicleShield.Data
                 .WithOne(v => v.Customer)
                 .HasForeignKey(v => v.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Customer>()
+                .HasMany(c => c.Feedbacks)
+                .WithOne(f => f.Customer)
+                .HasForeignKey(f => f.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Customer>()
                 .HasMany(c => c.Policies)

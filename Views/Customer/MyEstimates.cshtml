@@ -1,0 +1,76 @@
+@model IEnumerable<VehicleShield.Models.Estimate>
+@{
+    ViewData["Title"] = "My Estimates";
+    Layout = "_CustomerLayout";
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>My Premium Estimates</h1>
+        <p>Review details of previously generated premium estimates for your vehicles</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="BuyPolicy" class="btn btn-primary">
+            Calculate New Premium
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Generated Estimate History</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date Generated</th>
+                            <th>Vehicle Specs</th>
+                            <th>Vehicle Value (IDV)</th>
+                            <th>Plan Selected</th>
+                            <th>Warranty Period</th>
+                            <th>Linked Policy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var est in Model)
+                        {
+                            <tr>
+                                <td>@est.DateCreated.ToString("MMM dd, yyyy hh:mm tt")</td>
+                                <td>
+                                    <div style="font-weight: 700; color: #fff;">@est.VehicleName</div>
+                                    <small style="color: var(--text-muted);">Model: @est.VehicleModel</small>
+                                </td>
+                                <td style="font-weight: 600; color: #fff;">Rs. @est.VehicleRate.ToString("N0")</td>
+                                <td style="font-weight: 600; color: var(--primary);">@est.VehiclePolicyType</td>
+                                <td>@est.VehicleWarranty</td>
+                                <td>
+                                    @if (est.PolicyId > 0)
+                                    {
+                                        <a asp-action="PolicyDetails" asp-route-id="@est.PolicyId" class="badge badge-active" style="text-decoration: none;">
+                                            View Policy
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-inactive">Historical / No Policy</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                <p style="margin-bottom: 20px;">You haven't generated any estimates yet.</p>
+                <a asp-action="BuyPolicy" class="btn btn-primary">Calculate Premium Now</a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,146 @@
+@model List<VehicleShield.Models.CustomerFeedback>
+@{
+    ViewData["Title"] = "Manage Customer Reviews";
+    Layout = "_AdminLayout";
+    var pending = Model.Where(f => !f.IsApproved).ToList();
+    var approved = Model.Where(f => f.IsApproved).ToList();
+}
+
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Customer <span class="gradient-text">Reviews</span> ⭐</h1>
+        <p>Customer reviews approve ya reject karein — approved reviews website per show hongi</p>
+    </div>
+    <div class="page-header-actions">
+        <span class="badge badge-pending" style="font-size:0.85rem;padding:8px 16px">@pending.Count Pending</span>
+        <span class="badge badge-active" style="font-size:0.85rem;padding:8px 16px">@approved.Count Approved</span>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);border-radius:14px;padding:14px 20px;margin-bottom:22px;display:flex;align-items:center;gap:12px;color:#4ade80;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>@TempData["SuccessMessage"]</span>
+    </div>
+}
+
+<!-- PENDING REVIEWS -->
+@if (pending.Any())
+{
+    <div class="card" style="margin-bottom:24px">
+        <div class="card-header">
+            <h3>⏳ Pending Approval (@pending.Count)</h3>
+        </div>
+        <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:16px">
+                @foreach (var fb in pending)
+                {
+                    var initials = fb.CustomerName.Length >= 2
+                        ? $"{fb.CustomerName[0]}{(fb.CustomerName.Contains(' ') ? fb.CustomerName.Split(' ')[1][0].ToString() : fb.CustomerName[1].ToString())}"
+                        : fb.CustomerName.Substring(0, 1);
+                    <div class="feedback-row">
+                        <div class="feedback-avatar">@initials.ToUpper()</div>
+                        <div class="feedback-info">
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                                <p class="feedback-name">@fb.CustomerName</p>
+                                <div style="color:#FFE500;font-size:1rem">
+                                    @for (int s = 1; s <= 5; s++) { <span style="color:@(s <= fb.Rating ? "#FFE500" : "rgba(255,229,0,0.2)")">★</span> }
+                                </div>
+                                <span class="badge badge-pending" style="font-size:0.7rem">Pending</span>
+                                <span style="font-size:0.72rem;color:var(--text-muted)">@fb.PolicyTag</span>
+                            </div>
+                            <p class="feedback-text">"@fb.ReviewText"</p>
+                            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">Submitted: @fb.SubmittedAt.ToString("dd MMM yyyy, hh:mm tt")</p>
+                        </div>
+                        <div class="feedback-actions">
+                            <form method="post" asp-action="ApproveFeedback" asp-route-id="@fb.FeedbackId" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-primary btn-sm">✓ Approve</button>
+                            </form>
+                            <form method="post" asp-action="DeleteFeedback" asp-route-id="@fb.FeedbackId" style="display:inline" onsubmit="return confirm('Is review ko delete karein?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline btn-sm" style="border-color:rgba(239,68,68,0.4);color:#f87171">✕ Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card" style="margin-bottom:24px;text-align:center;padding:30px">
+        <p style="color:var(--text-muted)">✅ Koi pending review nahi hai.</p>
+    </div>
+}
+
+<!-- APPROVED REVIEWS -->
+@if (approved.Any())
+{
+    <div class="card">
+        <div class="card-header">
+            <h3>✓ Approved Reviews (@approved.Count)</h3>
+        </div>
+        <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:16px">
+                @foreach (var fb in approved)
+                {
+                    var initials = fb.CustomerName.Length >= 2
+                        ? $"{fb.CustomerName[0]}{(fb.CustomerName.Contains(' ') ? fb.CustomerName.Split(' ')[1][0].ToString() : fb.CustomerName[1].ToString())}"
+                        : fb.CustomerName.Substring(0, 1);
+                    <div class="feedback-row" style="border-color:rgba(34,197,94,0.2)">
+                        <div class="feedback-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">@initials.ToUpper()</div>
+                        <div class="feedback-info">
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                                <p class="feedback-name">@fb.CustomerName</p>
+                                <div style="font-size:1rem">
+                                    @for (int s = 1; s <= 5; s++) { <span style="color:@(s <= fb.Rating ? "#FFE500" : "rgba(255,229,0,0.2)")">★</span> }
+                                </div>
+                                <span class="badge badge-active" style="font-size:0.7rem">Live</span>
+                                <span style="font-size:0.72rem;color:var(--text-muted)">@fb.PolicyTag</span>
+                            </div>
+                            <p class="feedback-text">"@fb.ReviewText"</p>
+                            <p style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">Submitted: @fb.SubmittedAt.ToString("dd MMM yyyy, hh:mm tt")</p>
+                        </div>
+                        <div class="feedback-actions">
+                            <form method="post" asp-action="RejectFeedback" asp-route-id="@fb.FeedbackId" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline btn-sm" style="border-color:rgba(251,191,36,0.4);color:#fbbf24">⊘ Unpublish</button>
+                            </form>
+                            <form method="post" asp-action="DeleteFeedback" asp-route-id="@fb.FeedbackId" style="display:inline" onsubmit="return confirm('Is review ko delete karein?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline btn-sm" style="border-color:rgba(239,68,68,0.4);color:#f87171">✕ Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+.feedback-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: var(--sidebar-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+}
+.feedback-row:hover { border-color: var(--primary); }
+.feedback-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.feedback-info { flex: 1; min-width: 0; }
+.feedback-name { font-weight: 700; color: #fff; font-size: 0.9rem; }
+.feedback-text { color: var(--text-muted); font-size: 0.83rem; margin-top: 6px; line-height: 1.6; font-style: italic; }
+.feedback-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+</style>

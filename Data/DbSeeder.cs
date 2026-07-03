@@ -13,6 +13,56 @@ namespace VehicleShield.Data
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            // Synchronize migration history if database already exists but history is empty
+            try
+            {
+                // Create __EFMigrationsHistory if it doesn't exist
+                await context.Database.ExecuteSqlRawAsync(@"
+                    IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+                    BEGIN
+                        CREATE TABLE [__EFMigrationsHistory] (
+                            [MigrationId] nvarchar(150) NOT NULL,
+                            [ProductVersion] nvarchar(32) NOT NULL,
+                            CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+                        );
+                    END;
+                ");
+
+                // Check if AspNetRoles table exists
+                var hasAspNetRoles = false;
+                try
+                {
+                    await context.Database.ExecuteSqlRawAsync("SELECT TOP 1 1 FROM [AspNetRoles]");
+                    hasAspNetRoles = true;
+                }
+                catch
+                {
+                    hasAspNetRoles = false;
+                }
+
+                if (hasAspNetRoles)
+                {
+                    // Seed the migration history for existing tables
+                    await context.Database.ExecuteSqlRawAsync(@"
+                        IF NOT EXISTS (SELECT 1 FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20260614110825_InitialCreate')
+                        BEGIN
+                            INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+                            VALUES ('20260614110825_InitialCreate', '9.0.0');
+                        END;
+                        
+                        IF NOT EXISTS (SELECT 1 FROM [__EFMigrationsHistory] WHERE [MigrationId] = '20260617181614_AddInsurancePlans')
+                        BEGIN
+                            INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+                            VALUES ('20260617181614_AddInsurancePlans', '9.0.0');
+                        END;
+                    ");
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore seeding sync issues and let MigrateAsync handle it
+            }
+
             // Migrate database automatically
             await context.Database.MigrateAsync();
 
@@ -229,6 +279,42 @@ namespace VehicleShield.Data
                 };
 
                 context.Claims.Add(claim);
+                await context.SaveChangesAsync();
+            }
+
+
+            // Seed Insurance Plans if empty
+            if (!context.InsurancePlans.Any())
+            {
+                context.InsurancePlans.AddRange(
+                    new InsurancePlan
+                    {
+                        PlanName = "Comprehensive Cover",
+                        Description = "Complete protection including own damage, third-party liability, and personal accident cover.",
+                        Price = 5.0m,
+                        Features = "Own Damage Coverage, Theft Protection, Fire & Natural Disasters, Third-Party Liability, Personal Accident Cover",
+                        IsPopular = true,
+                        IsActive = true
+                    },
+                    new InsurancePlan
+                    {
+                        PlanName = "Third Party Cover",
+                        Description = "Basic legal compliance plan covering damages to third-party properties and persons.",
+                        Price = 1.5m,
+                        Features = "Third-Party Property Damage, Third-Party Injury Cover, Legal Compliance, Quick Settlement",
+                        IsPopular = false,
+                        IsActive = true
+                    },
+                    new InsurancePlan
+                    {
+                        PlanName = "Premium Elite",
+                        Description = "Top-tier premium plan with zero depreciation, roadside assistance, engine protection and key replacement cover.",
+                        Price = 8.0m,
+                        Features = "Zero Depreciation, Roadside Assistance, Engine Protection, Key Replacement Cover, High Claim Priority",
+                        IsPopular = false,
+                        IsActive = true
+                    }
+                );
                 await context.SaveChangesAsync();
             }
 

@@ -28,7 +28,19 @@ namespace VehicleShield.Controllers
             double successRate = totalClaims == 0 ? 100 : ((double)approvedClaims / totalClaims) * 100;
             ViewBag.ClaimSuccess = Math.Round(successRate, 1);
 
-            return View();
+            // Approved customer feedbacks for testimonials section
+            ViewBag.ApprovedFeedbacks = await _context.CustomerFeedbacks
+                .Where(f => f.IsApproved)
+                .OrderByDescending(f => f.SubmittedAt)
+                .Take(12)
+                .ToListAsync();
+
+            // Fetch active plans to display dynamically on public website
+            var activePlans = await _context.InsurancePlans
+                .Where(p => p.IsActive)
+                .ToListAsync();
+
+            return View(activePlans);
         }
 
         [HttpPost]

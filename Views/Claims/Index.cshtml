@@ -14,7 +14,7 @@
 <div class="page-header">
     <div class="page-header-left">
         <h1>Claims Management</h1>
-        <p>Insurance claims ki manzuri, reject, aur tracking karein</p>
+        <p>Approve, reject, and track insurance claims</p>
     </div>
     <div class="page-header-actions">
         <a asp-action="Create" class="btn btn-primary">
@@ -106,7 +106,7 @@
                             <th>Claim #</th>
                             <th>Customer</th>
                             <th>Location</th>
-                            <th>Tarikh</th>
+                            <th>Date</th>
                             <th>Status</th>
                             <th style="text-align:center;">Actions</th>
                         </tr>
@@ -215,10 +215,10 @@
                         <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.5"/>
                     </svg>
                 </div>
-                <h3>Koi Claim Nahi Mila</h3>
-                <p>Abhi tak koi insurance claim file nahi ki gayi.</p>
+                <h3>No Claims Found</h3>
+                <p>No insurance claims have been filed yet.</p>
                 <a asp-action="Create" class="btn btn-primary" style="margin-top:8px;">
-                    Pehla Claim Banayein
+                    Create First Claim
                 </a>
             </div>
         }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VehicleShield.Data;
+using VehicleShield.Models;
 
 namespace VehicleShield.Controllers
 {
@@ -36,6 +37,74 @@ namespace VehicleShield.Controllers
                 .FirstOrDefaultAsync(m => m.BillingId == id);
 
             if (billing == null) return NotFound();
+
+            return View(billing);
+        }
+
+        // ==========================
+        // EDIT GET
+        // ==========================
+        [Route("Admin/Billing/Edit/{id}")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var billing = await _context.Billings.FindAsync(id);
+            if (billing == null) return NotFound();
+
+            return View(billing);
+        }
+
+        // ==========================
+        // EDIT POST
+        // ==========================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Admin/Billing/Edit/{id}")]
+        public async Task<IActionResult> Edit(int id, Billing billing)
+        {
+            if (id != billing.BillingId) return NotFound();
+
+            // Ignore navigation properties validation
+            ModelState.Remove("Customer");
+            ModelState.Remove("Policy");
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingBilling = await _context.Billings.FirstOrDefaultAsync(b => b.BillingId == id);
+                    if (existingBilling == null) return NotFound();
+
+                    existingBilling.CustomerName = billing.CustomerName;
+                    existingBilling.CustomerPhone = billing.CustomerPhone;
+                    existingBilling.CustomerAddProve = billing.CustomerAddProve;
+                    existingBilling.VehicleName = billing.VehicleName;
+                    existingBilling.VehicleModel = billing.VehicleModel;
+                    existingBilling.VehicleRate = billing.VehicleRate;
+                    existingBilling.VehicleBodyNumber = billing.VehicleBodyNumber;
+                    existingBilling.VehicleEngineNumber = billing.VehicleEngineNumber;
+                    existingBilling.BillDate = billing.BillDate;
+                    existingBilling.Amount = billing.Amount;
+                    existingBilling.PaymentStatus = billing.PaymentStatus;
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Billings.Any(e => e.BillingId == billing.BillingId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Billing record updated successfully.";
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(billing);
         }

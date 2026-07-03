@@ -43,8 +43,63 @@ namespace VehicleShield.Controllers
                 .Take(5)
                 .ToListAsync();
 
+            ViewBag.PendingFeedbacksCount = await _context.CustomerFeedbacks.CountAsync(f => !f.IsApproved);
+
             var data = new Tuple<List<Models.Claim>, List<Models.Billing>>(recentClaims, recentBillings);
             return View(data);
+        }
+
+        // ==========================================
+        // Manage Customer Feedbacks
+        // ==========================================
+        [HttpGet]
+        public async Task<IActionResult> ManageFeedbacks()
+        {
+            var feedbacks = await _context.CustomerFeedbacks
+                .OrderByDescending(f => f.SubmittedAt)
+                .ToListAsync();
+
+            return View(feedbacks);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveFeedback(int id)
+        {
+            var fb = await _context.CustomerFeedbacks.FindAsync(id);
+            if (fb == null) return NotFound();
+            fb.IsApproved = true;
+            _context.Update(fb);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"{fb.CustomerName} ki review approve kar di gayi!";
+            return RedirectToAction("ManageFeedbacks");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectFeedback(int id)
+        {
+            var fb = await _context.CustomerFeedbacks.FindAsync(id);
+            if (fb == null) return NotFound();
+            fb.IsApproved = false;
+            _context.Update(fb);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"{fb.CustomerName} ki review reject/unpublish kar di gayi.";
+            return RedirectToAction("ManageFeedbacks");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFeedback(int id)
+        {
+            var fb = await _context.CustomerFeedbacks.FindAsync(id);
+            if (fb != null)
+            {
+                _context.CustomerFeedbacks.Remove(fb);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Review delete kar di gayi.";
+            }
+            return RedirectToAction("ManageFeedbacks");
         }
     }
 }

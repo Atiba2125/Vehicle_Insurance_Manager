@@ -27,5 +27,6 @@ namespace VehicleShield.Models
         public ICollection<Estimate> Estimates { get; set; } = new List<Estimate>();
         public ICollection<Billing> Billings { get; set; } = new List<Billing>();
         public ICollection<Claim> Claims { get; set; } = new List<Claim>();
+        public ICollection<CustomerFeedback> Feedbacks { get; set; } = new List<CustomerFeedback>();
     }
 }

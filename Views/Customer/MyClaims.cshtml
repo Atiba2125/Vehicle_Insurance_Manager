@@ -39,7 +39,7 @@
                                     <td style="font-weight: 700; color: #fff;">@claim.ClaimNumber</td>
                                     <td style="font-size: 0.8rem; color: var(--text-muted);">@claim.PolicyNumber</td>
                                     <td style="font-size: 0.82rem;">@claim.DateFiled.ToString("MMM dd, yyyy")</td>
-                                    <td style="font-weight: 600; color: #fff;">₹@claim.ClaimableAmount.ToString("N2")</td>
+                                    <td style="font-weight: 600; color: #fff;">Rs. @claim.ClaimableAmount.ToString("N2")</td>
                                     <td>
                                         <span class="badge @(claim.Status == "Approved" ? "badge-active" : (claim.Status == "Pending" ? "badge-pending" : "badge-inactive"))">@claim.Status</span>
                                     </td>
@@ -72,7 +72,7 @@
                         <select id="policyId" name="policyId" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;">
                             @foreach (var policy in activePolicies)
                             {
-                                <option value="@policy.PolicyId">@policy.VehicleName (@policy.PolicyNumber) - Valued at ₹@policy.VehicleRate.ToString("N0")</option>
+                                <option value="@policy.PolicyId">@policy.VehicleName (@policy.PolicyNumber) - Valued at Rs. @policy.VehicleRate.ToString("N0")</option>
                             }
                         </select>
                     </div>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="form-group" style="padding:0;">
-                        <label for="claimableAmount" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Claimable Amount Required (in ₹)</label>
+                        <label for="claimableAmount" style="color:var(--text-muted); font-size:0.8rem; margin-bottom:5px; display:block;">Claimable Amount Required (in PKR/Rs.)</label>
                         <input type="number" id="claimableAmount" name="claimableAmount" placeholder="e.g. 45000" required style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--card-border); background:var(--input-bg); color:#fff;" />
                     </div>
 

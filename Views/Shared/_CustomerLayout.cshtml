@@ -1,3 +1,28 @@
+@inject VehicleShield.Data.ApplicationDbContext _context
+@inject Microsoft.AspNetCore.Identity.UserManager<VehicleShield.Models.ApplicationUser> _userManager
+@{
+    var appUser = await _userManager.GetUserAsync(User);
+    var customerName = appUser?.FullName ?? User.Identity?.Name ?? "Customer";
+    
+    // Calculate initials dynamically
+    string initials = "C";
+    if (!string.IsNullOrWhiteSpace(customerName))
+    {
+        var parts = customerName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+        {
+            initials = $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        }
+        else if (parts.Length == 1 && parts[0].Length >= 2)
+        {
+            initials = $"{parts[0][0]}{parts[0][1]}".ToUpper();
+        }
+        else if (parts.Length == 1 && parts[0].Length == 1)
+        {
+            initials = $"{parts[0][0]}".ToUpper();
+        }
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,9 +55,9 @@
             </a>
 
             <div class="sidebar-user">
-                <div class="user-avatar" style="background:linear-gradient(135deg,#FFD600,#FFAB00)">C</div>
+                <div class="user-avatar" style="background:linear-gradient(135deg,#FFD600,#FFAB00)">@initials</div>
                 <div>
-                    <p class="user-name">@User.Identity?.Name</p>
+                    <p class="user-name">@customerName</p>
                     <p class="user-role">Customer</p>
                 </div>
             </div>
@@ -44,7 +69,7 @@
                     Dashboard
                 </a>
 
-                <span class="nav-section-label">Insurance</span>
+                <span class="nav-section-label">Insurance Portfolio</span>
                 <a asp-controller="Customer" asp-action="MyPolicies" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyPolicies" ? "active" : "")">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" /></svg>
                     My Policies
@@ -58,10 +83,28 @@
                     My Claims
                 </a>
 
+                <span class="nav-section-label">Bills & Estimates</span>
+                <a asp-controller="Customer" asp-action="MyBillings" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyBillings" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 15h10M7 11h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    My Invoices
+                </a>
+                <a asp-controller="Customer" asp-action="MyEstimates" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyEstimates" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    My Estimates
+                </a>
+
                 <span class="nav-section-label">Account</span>
+                <a asp-controller="Customer" asp-action="MyProfile" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyProfile" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/></svg>
+                    My Profile
+                </a>
                 <a asp-controller="Account" asp-action="ChangePassword" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ChangePassword" ? "active" : "")">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2" /><path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
                     Change Password
+                </a>
+                <a asp-controller="Customer" asp-action="SubmitFeedback" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "SubmitFeedback" ? "active" : "")">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" stroke="currentColor" stroke-width="2"/></svg>
+                    My Review
                 </a>
             </nav>
 
@@ -94,8 +137,8 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
                     </button>
                     <div class="topbar-btn" style="width:auto;padding:0 10px;gap:6px;font-size:0.8rem;font-weight:600;color:var(--text);">
-                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#FFD600,#FFAB00);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#000">RK</div>
-                        Customer
+                        <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#FFD600,#FFAB00);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#000">@initials</div>
+                        @customerName
                     </div>
                 </div>
             </header>

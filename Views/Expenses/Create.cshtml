@@ -5,72 +5,34 @@
     Layout = "_AdminLayout";
 }
 
-<div style="padding:30px; max-width:900px;">
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Create Expense</h1>
+        <p>Add a new business expense record</p>
+    </div>
+    <div class="page-header-actions">
+        <a asp-action="Index" class="btn btn-outline">Back to List</a>
+    </div>
+</div>
 
-   
-    <h1 style="font-size:48px;font-weight:700;margin-bottom:10px;">
-        Create Expense
-    </h1>
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <div class="card-header">
+        <h3>Expense Details Form</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" style="display:flex; flex-direction:column; gap:16px;">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" style="color: #ff6b6b; font-size: 0.85rem; margin-bottom: 10px;"></div>
 
-    <p style="color:#9ca3af;font-size:18px;margin-bottom:30px;">
-        Add a new business expense record
-    </p>
-
-    <div style="
-    background:#0f172a;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:20px;
-    padding:30px;
-">
-
-        <form asp-action="Create" method="post">
-
-            <div asp-validation-summary="ModelOnly"
-                 class="text-danger"
-                 style="margin-bottom:20px;">
+            <div class="form-group" style="padding:0;">
+                <label asp-for="DateOfExpense" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:6px; display:block;">Date Of Expense</label>
+                <input asp-for="DateOfExpense" type="date" class="form-control" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--input-bg); color: #fff;" />
+                <span asp-validation-for="DateOfExpense" style="color: #ff6b6b; font-size: 0.75rem;"></span>
             </div>
 
-            <div style="margin-bottom:25px;">
-
-                <label style="
-                display:block;
-                margin-bottom:10px;
-                font-size:18px;
-                font-weight:600;">
-                    Date Of Expense
-                </label>
-
-                <input asp-for="DateOfExpense"
-                       type="date"
-                       style="
-                   width:100%;
-                   padding:14px;
-                   border-radius:12px;
-                   border:1px solid #334155;
-                   background:#1e293b;
-                   color:white;" />
-
-            </div>
-
-            <div style="margin-bottom:25px;">
-
-                <label style="
-                display:block;
-                margin-bottom:10px;
-                font-size:18px;
-                font-weight:600;">
-                    Expense Type
-                </label>
-
-                <select asp-for="TypeOfExpense"
-                        style="
-                    width:100%;
-                    padding:14px;
-                    border-radius:12px;
-                    border:1px solid #334155;
-                    background:#1e293b;
-                    color:white;">
-
+            <div class="form-group" style="padding:0;">
+                <label asp-for="TypeOfExpense" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:6px; display:block;">Expense Type</label>
+                <select asp-for="TypeOfExpense" class="form-control" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--input-bg); color: #fff;">
                     <option value="">Select Expense Type</option>
                     <option>Office Rent</option>
                     <option>Electricity Bill</option>
@@ -80,67 +42,21 @@
                     <option>Insurance Processing</option>
                     <option>Marketing</option>
                     <option>Miscellaneous</option>
-
                 </select>
-
+                <span asp-validation-for="TypeOfExpense" style="color: #ff6b6b; font-size: 0.75rem;"></span>
             </div>
 
-            <div style="margin-bottom:30px;">
-
-                <label style="
-                display:block;
-                margin-bottom:10px;
-                font-size:18px;
-                font-weight:600;">
-                    Amount Of Expense
-                </label>
-
-                <input asp-for="AmountOfExpense"
-                       placeholder="Enter Amount"
-                       style="
-                   width:100%;
-                   padding:14px;
-                   border-radius:12px;
-                   border:1px solid #334155;
-                   background:#1e293b;
-                   color:white;" />
-
+            <div class="form-group" style="padding:0;">
+                <label asp-for="AmountOfExpense" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:6px; display:block;">Amount Of Expense</label>
+                <input asp-for="AmountOfExpense" class="form-control" placeholder="Enter Amount" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--input-bg); color: #fff;" />
+                <span asp-validation-for="AmountOfExpense" style="color: #ff6b6b; font-size: 0.75rem;"></span>
             </div>
 
-            <div style="display:flex;gap:15px;">
-
-                <button type="submit"
-                        style="
-                    border:none;
-                    padding:14px 30px;
-                    border-radius:12px;
-                    color:white;
-                    font-weight:600;
-                    background:linear-gradient(135deg,#6366f1,#06b6d4);">
-
-                    Save Expense
-
-                </button>
-
-                <a asp-action="Index"
-                   style="
-               text-decoration:none;
-               padding:14px 30px;
-               border-radius:12px;
-               background:#374151;
-               color:white;">
-
-                    Cancel
-
-                </a>
-
-            </div>
-
+            <button type="submit" class="btn btn-primary" style="justify-content:center; padding:12px; margin-top:10px;">
+                Save Expense
+            </button>
         </form>
-
     </div>
-   
-
 </div>
 
 @section Scripts {
